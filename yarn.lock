@@ -3171,15 +3171,15 @@ koa-router@^7.3.0:
     path-to-regexp "^1.1.1"
     urijs "^1.19.0"
 
-koa-session@^5.10.1:
-  version "5.10.1"
-  resolved "https://registry.yarnpkg.com/koa-session/-/koa-session-5.10.1.tgz#5246e71eb87a6efd38c008f2dcb74dc00bb6e7a0"
-  integrity sha512-N6i1kaypXcltNes+r1LSC/W8Y6mdEbnaLfhaUi0cqhA0/9snPMuh5aU7jjQzbCHc1twe7GJJQtG5ZdsNoArcZA==
+koa-session@^5.11.0:
+  version "5.11.0"
+  resolved "https://registry.yarnpkg.com/koa-session/-/koa-session-5.11.0.tgz#e050119705898be6279772b72927e955a2b44a8e"
+  integrity sha512-PET3jcnZBdyykWmw9ycNgOf87JKscSU9X4D9VBT16UJ7Z1EMBTQLvdI4gCf9nuTsKjXTgiAprAjLum98nsoVkA==
   dependencies:
     crc "^3.4.4"
     debug "^3.1.0"
     is-type-of "^1.0.0"
-    uid-safe "^2.1.3"
+    uuid "^3.3.2"
 
 koa-unless@1.0.7:
   version "1.0.7"
@@ -4209,10 +4209,6 @@ qs@^6.5.2, qs@~6.5.2:
   version "6.5.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
 
-random-bytes@~1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/random-bytes/-/random-bytes-1.0.0.tgz#4f68a1dc0ae58bd3fb95848c30324db75d64360b"
-
 raven@^2.4.2:
   version "2.6.4"
   resolved "https://registry.yarnpkg.com/raven/-/raven-2.6.4.tgz#458d4a380c8fbb59e0150c655625aaf60c167ea3"
@@ -5028,12 +5024,6 @@ uglify-js@^3.1.4:
   dependencies:
     commander "~2.17.1"
     source-map "~0.6.1"
-
-uid-safe@^2.1.3:
-  version "2.1.5"
-  resolved "https://registry.yarnpkg.com/uid-safe/-/uid-safe-2.1.5.tgz#2b3d5c7240e8fc2e58f8aa269e5ee49c0857bd3a"
-  dependencies:
-    random-bytes "~1.0.0"
 
 undefsafe@^2.0.2:
   version "2.0.2"
