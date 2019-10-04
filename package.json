@@ -13,7 +13,9 @@
     "start": "node server.js",
     "start:dev": "nodemon server --ignore __tests__",
     "test": "TEST_MODE=true jest --ci",
-    "test:dev": "TEST_MODE=true jest --watch"
+    "test:dev": "TEST_MODE=true jest --watch",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "husky": {
     "hooks": {
@@ -44,7 +46,8 @@
     "koa-session": "^5.12.3",
     "moment": "^2.24.0",
     "node-fetch": "^2.6.0",
-    "redis": "^2.8.0"
+    "redis": "^2.8.0",
+    "snyk": "^1.230.5"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
@@ -61,5 +64,6 @@
     "nodemon": "^1.19.3",
     "sinon": "^7.5.0",
     "supertest": "^4.0.2"
-  }
+  },
+  "snyk": true
 }
