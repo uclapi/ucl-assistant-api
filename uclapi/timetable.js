@@ -15,7 +15,10 @@ const getPersonalTimetable = async (token, date = null) => {
   }
   const { data, headers } = await axios.get(PERSONAL_TIMETABLE_URL, { params })
   return {
-    lastModified: headers[`last-modified`],
+    // lastModified should be headers[`last-modified`]
+    // but the main API is returning the wrong value
+    // TODO: change this back when caching is fixed
+    lastModified: (new Date()).toUTCString(),
     data,
   }
 }
