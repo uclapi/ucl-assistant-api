@@ -52,6 +52,16 @@ const jsonify = async (ctx, next) => {
     if (![400, 404].includes(error.status)) {
       Sentry.captureException(error)
     }
+    if (error.response && error.response.status && error.response.data) {
+      console.error(
+        `Error: HTTP ${
+        error.response.status
+        } ${
+        JSON.stringify(error.response.data)
+        }
+      `)
+    }
+    console.log(error.response)
     if (typeof error.message === `string`) {
       console.error(`Error: ${error.message}\n${error.stack}`)
       ctx.error = error.message
