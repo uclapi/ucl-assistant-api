@@ -4,7 +4,7 @@ const { jwt } = require(`../middleware/auth`)
 const { getUserData } = require(`./user`)
 const { getPersonalTimetable, getModuleTimetable } = require(`./timetable`)
 const { peopleSearch } = require(`./people`)
-const { roomsSearch, getEquipment } = require(`./rooms`)
+const { roomsSearch, getEquipment, getSites } = require(`./rooms`)
 const { loadOrFetch } = require(`../redis`)
 const { getRoomBookings, getFreeRooms } = require(`./roombookings`)
 const {
@@ -24,6 +24,7 @@ const {
   ROOMS_SEARCH_PATH,
   TIMETABLE_PERSONAL_PATH,
   TIMETABLE_MODULE_PATH,
+  SITES_SEARCH_PATH,
 } = require(`../redis/keys`)
 const {
   WORKSPACE_SUMMARY_TTL,
@@ -105,6 +106,16 @@ router.get(`/search/rooms`, jwt, async ctx => {
     ROOMS_SEARCH_TTL,
   )
   ctx.body = data
+})
+
+router.get(`/sites`, jwt, async ctx => {
+  const rooms = await loadOrFetch(
+    ctx,
+    `${SITES_SEARCH_PATH}`,
+    async () => getSites(),
+    ROOMS_SEARCH_TTL,
+  )
+  ctx.body = rooms
 })
 
 router.get(`/equipment`, jwt, async ctx => {

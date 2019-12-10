@@ -19,6 +19,22 @@ const roomsSearch = async query => {
   })).data
 }
 
+const getSites = async () => {
+  const { data: { rooms } } = (await axios.get(ROOMS_SEARCH_URL, {
+    params: {
+      token: UCLAPI_TOKEN,
+    },
+  }))
+  const sites = Array.from(new Set(rooms.map(({ siteid }) => siteid)))
+    .map(siteid => {
+      return {
+        siteid,
+        sitename: rooms.find(r => r.siteid === siteid).sitename,
+      }
+    })
+  return { sites }
+}
+
 const getEquipment = async (roomid, siteid) => {
   if (!roomid || !siteid) {
     throw new Error(`Must specify roomid and siteid`)
@@ -36,4 +52,5 @@ const getEquipment = async (roomid, siteid) => {
 module.exports = {
   roomsSearch,
   getEquipment,
+  getSites,
 }
