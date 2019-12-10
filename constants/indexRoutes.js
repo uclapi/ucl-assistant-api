@@ -21,6 +21,9 @@ const indexRoutes = {
         query: `Name of room you are searching for`,
       },
     },
+    "/sites": {
+      description: `Returns list of sitenames & siteids`,
+    },
     "/equipment": {
       description: `Returns the equipment in the specified room`,
       parameters: {
