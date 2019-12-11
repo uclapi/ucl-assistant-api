@@ -4,9 +4,15 @@ const indexRoutes = {
     "/connect/uclapi/callback": `Callback from the UCL API`,
     "/user": `Get information about the currently authenticated user.`,
     "/timetable": {
-      description: `Return the timetable for the current user.`,
+      description: `Returns the timetable for the current user.`,
       parameters: {
         date: `filter by date.`,
+      },
+    },
+    "/timetable/week": {
+      description: `Returns the weekly timetable for the current user`,
+      parameters: {
+        date: `date on the Monday of that week`,
       },
     },
     "/search/people": {
@@ -65,8 +71,10 @@ const indexRoutes = {
     "/freerooms": {
       description: `Returns all rooms free between now and the end of the day`,
       parameters: {
-        start_datetime: `Start datetime in ISO8601 format, e.g. 2011-03-06T03:36:45+00:00`,
-        end_datetime: `End datetime in ISO8601 format, e.g. 2011-03-06T03:36:45+00:00`,
+        start_datetime: `Start datetime in ISO8601 format, `
+          + `e.g. 2011-03-06T03:36:45+00:00`,
+        end_datetime: `End datetime in ISO8601 format, `
+          + `e.g. 2011-03-06T03:36:45+00:00`,
       },
     },
     "/ping": `returns a 200 OK message. good for testing liveness`,
