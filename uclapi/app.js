@@ -2,7 +2,11 @@ const Koa = require(`koa`)
 const Router = require(`koa-router`)
 const { jwt } = require(`../middleware/auth`)
 const { getUserData } = require(`./user`)
-const { getPersonalTimetable, getModuleTimetable } = require(`./timetable`)
+const {
+  getPersonalTimetable,
+  getModuleTimetable,
+  getPersonalWeekTimetable,
+} = require(`./timetable`)
 const { peopleSearch } = require(`./people`)
 const { roomsSearch, getEquipment, getSites } = require(`./rooms`)
 const { loadOrFetch } = require(`../redis`)
@@ -50,6 +54,21 @@ router.get(`/timetable`, jwt, async ctx => {
     ctx,
     `${TIMETABLE_PERSONAL_PATH}/${ctx.state.user.upi}/${date}`,
     async () => getPersonalTimetable(ctx.state.user.apiToken, date),
+    TIMETABLE_TTL,
+  )
+
+  const { lastModified, data } = timetableData
+  ctx.body = data
+  ctx.set(`Last-Modified`, lastModified)
+})
+
+router.get(`/timetable/week`, jwt, async ctx => {
+  const date = ctx.query.date || null
+
+  const timetableData = await loadOrFetch(
+    ctx,
+    `${TIMETABLE_PERSONAL_PATH}/${ctx.state.user.upi}/week/${date}`,
+    async () => getPersonalWeekTimetable(ctx.state.user.apiToken, date),
     TIMETABLE_TTL,
   )
 
