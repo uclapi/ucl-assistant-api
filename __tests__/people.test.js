@@ -1,27 +1,22 @@
-require(`dotenv`).config()
-const sinon = require(`sinon`)
 const axios = require(`axios`)
 const { PEOPLE_SEARCH_URL } = require(`../constants/apiRoutes`)
 
 const { peopleSearch } = require(`../uclapi/people`)
 
-describe(`people`, () => {
-  it(`should send a valid search request`, async () => {
-    const query = `William McGonagall`
-    const searchRequest = sinon.mock(axios)
+jest.mock(`axios`)
 
-    searchRequest.expects(`get`).once().withExactArgs(
-      PEOPLE_SEARCH_URL,
-      {
-        params: {
-          token: process.env.UCLAPI_TOKEN,
-          query,
-        },
-      },
-    )
+const SAMPLE_TOKEN = `tokeytoken`
+
+describe(`people`, () => {
+
+  beforeAll(() => {
+    process.env.token = SAMPLE_TOKEN
+  })
+
+  it(`should send a valid search request`, () => {
+    const query = `William McGonagall`
 
     peopleSearch(query)
-
-    return searchRequest.verify()
+    expect(axios.get.mock.calls).toMatchSnapshot()
   })
 })
