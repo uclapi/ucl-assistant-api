@@ -12,7 +12,7 @@
     "lint:staged": "lint-staged",
     "start": "node server.js",
     "start:dev": "nodemon server --ignore __tests__",
-    "test": "TEST_MODE=true jest --ci",
+    "test": "TEST_MODE=true jest --ci && codecov",
     "test:dev": "TEST_MODE=true jest --watch"
   },
   "husky": {
@@ -48,6 +48,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
+    "codecov": "^3.6.1",
     "dotenv": "^8.2.0",
     "eslint": "^6.8.0",
     "eslint-plugin-import": "^2.19.1",

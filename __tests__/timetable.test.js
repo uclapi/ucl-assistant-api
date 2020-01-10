@@ -41,6 +41,5 @@ describe(`timetable`, () => {
     } catch (error) {
       expect(error).toMatchSnapshot()
     }
-
   })
 })
