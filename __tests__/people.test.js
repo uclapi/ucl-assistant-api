@@ -10,7 +10,7 @@ const SAMPLE_TOKEN = `tokeytoken`
 describe(`people`, () => {
 
   beforeAll(() => {
-    process.env.token = SAMPLE_TOKEN
+    process.env.UCLAPI_TOKEN = SAMPLE_TOKEN
   })
 
   it(`should send a valid search request`, () => {

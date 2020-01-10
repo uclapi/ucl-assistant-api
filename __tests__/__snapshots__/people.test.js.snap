@@ -7,7 +7,7 @@ Array [
     Object {
       "params": Object {
         "query": "William McGonagall",
-        "token": undefined,
+        "token": "tokeytoken",
       },
     },
   ],
