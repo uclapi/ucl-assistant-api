@@ -1,4 +1,4 @@
-const Sentry = require(`@sentry/node`)
+const ErrorManager = require(`../lib/ErrorManager`)
 const auth = require(`./auth`)
 
 /**
@@ -20,7 +20,13 @@ const timer = async (ctx, next) => {
  */
 const logger = async (ctx, next) => {
   await next()
-  console.log(`${ctx.method} ${ctx.url} => ${ctx.status} "${ctx.message}"`, `${ctx.headers}`)
+  ErrorManager.addDetail({
+    method: ctx.method,
+    url: ctx.url,
+    status: ctx.status,
+    message: ctx.message,
+    headers: ctx.headers,
+  })
 }
 
 const jsonFormatPretty = ctx =>
@@ -49,9 +55,6 @@ const jsonify = async (ctx, next) => {
   try {
     await next()
   } catch (error) {
-    if (![400, 404].includes(error.status)) {
-      Sentry.captureException(error)
-    }
     if (error.response && error.response.status && error.response.data) {
       console.error(
         `Error: HTTP ${
@@ -61,7 +64,6 @@ const jsonify = async (ctx, next) => {
         }
       `)
     }
-    console.log(error.response)
     if (typeof error.message === `string`) {
       console.error(`Error: ${error.message}\n${error.stack}`)
       ctx.error = error.message
@@ -71,6 +73,11 @@ const jsonify = async (ctx, next) => {
       )
       ctx.error = JSON.stringify(error.message, `\n`, 2)
     }
+
+    if (![400, 404].includes(error.status)) {
+      ErrorManager.captureError(error, { ...error.response })
+    }
+
     ctx.status = error.status || 500
     ctx.body = { error: ctx.error }
   }

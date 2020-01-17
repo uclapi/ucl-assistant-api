@@ -11,7 +11,7 @@ const { jsonify, logger, timer } = require(`./middleware`)
 const URL = require(`url`)
 const redis = require(`redis`)
 const { promisify } = require(`util`)
-const Sentry = require(`@sentry/node`)
+const ErrorManager = require(`./lib/ErrorManager`)
 const router = require(`./router`)
 const { app: UCLAPI } = require(`./uclapi`)
 const { app: notifications } = require(`./notifications`)
@@ -19,13 +19,7 @@ const { app: notifications } = require(`./notifications`)
 // eslint-disable-next-line security/detect-non-literal-fs-filename
 const { version } = JSON.parse(fs.readFileSync(`./package.json`))
 
-const sentryDsnUrl = process.env.SENTRY_DSN
-
-if (sentryDsnUrl === undefined) {
-  console.error(`Sentry DSN not provided!`)
-} else {
-  Sentry.init({ dsn: process.env.SENTRY_DSN })
-}
+ErrorManager.initialise()
 
 const app = new Koa()
 
@@ -100,6 +94,8 @@ app.use(jsonify)
 app.use(mount(`/notifications`, notifications))
 app.use(mount(UCLAPI))
 app.use(mount(router))
+
+app.on(`error`, ErrorManager.koaErrorHandler)
 
 if (!module.parent) {
   const port = process.env.PORT || 3000
