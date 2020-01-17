@@ -19,7 +19,6 @@ const timer = async (ctx, next) => {
  * @param  {Function} next async function to call next
  */
 const logger = async (ctx, next) => {
-  await next()
   ErrorManager.addDetail({
     method: ctx.method,
     url: ctx.url,
@@ -27,6 +26,7 @@ const logger = async (ctx, next) => {
     message: ctx.message,
     headers: ctx.headers,
   })
+  await next()
 }
 
 const jsonFormatPretty = ctx =>
@@ -56,26 +56,21 @@ const jsonify = async (ctx, next) => {
     await next()
   } catch (error) {
     if (error.response && error.response.status && error.response.data) {
-      console.error(
-        `Error: HTTP ${
-        error.response.status
-        } ${
-        JSON.stringify(error.response.data)
-        }
-      `)
+      ErrorManager.addDetail({
+        status: error.response.status,
+        response: JSON.stringify(error.response.data),
+      })
     }
     if (typeof error.message === `string`) {
-      console.error(`Error: ${error.message}\n${error.stack}`)
       ctx.error = error.message
     } else {
-      console.error(
-        `Error: ${JSON.stringify(error.message, `\n`, 2)}\n${error.stack}`,
-      )
       ctx.error = JSON.stringify(error.message, `\n`, 2)
     }
 
     if (![400, 404].includes(error.status)) {
-      ErrorManager.captureError(error, { ...error.response })
+      ErrorManager.addDetail({ response: error.response })
+      ErrorManager.addDetail({ requestHeaders: ctx.headers })
+      ErrorManager.captureError(error)
     }
 
     ctx.status = error.status || 500
