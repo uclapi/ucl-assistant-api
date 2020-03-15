@@ -91,6 +91,10 @@ Array [
     "name": "The Joint Library of Ophthalmology",
   },
   Object {
+    "id": 78,
+    "name": "Tavistock Square",
+  },
+  Object {
     "id": 32,
     "name": "Royal Free Hospital Medical Library",
   },
@@ -109,6 +113,10 @@ Array [
   Object {
     "id": 86,
     "name": "Master Library",
+  },
+  Object {
+    "id": 89,
+    "name": "Master All",
   },
   Object {
     "id": 64,
@@ -175,8 +183,8 @@ Array [
     "name": "23 Gordon Square 203",
   },
   Object {
-    "id": 78,
-    "name": "Tavistock Square",
+    "id": 88,
+    "name": "1 Saint Martin Le Grand",
   },
   Object {
     "id": 72,
@@ -276,6 +284,10 @@ Array [
     "name": "The Joint Library of Ophthalmology",
   },
   Object {
+    "id": 78,
+    "name": "Tavistock Square",
+  },
+  Object {
     "id": 32,
     "name": "Royal Free Hospital Medical Library",
   },
@@ -352,8 +364,8 @@ Array [
     "name": "23 Gordon Square 203",
   },
   Object {
-    "id": 78,
-    "name": "Tavistock Square",
+    "id": 88,
+    "name": "1 Saint Martin Le Grand",
   },
   Object {
     "id": 72,

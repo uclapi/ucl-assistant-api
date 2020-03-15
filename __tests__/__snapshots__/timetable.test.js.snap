@@ -54,3 +54,7 @@ Array [
   ],
 ]
 `;
+
+exports[`timetable should throw error if date is invalid 1`] = `[Error: Must specify date to retrieve weekly timetable]`;
+
+exports[`timetable should throw error if date is invalid 2`] = `[Error: Date must be a Monday]`;

@@ -15,17 +15,17 @@ describe(`timetable`, () => {
   beforeAll(() => {
     process.env.UCLAPI_CLIENT_SECRET = SAMPLE_CLIENT_SECRET
   })
-  it(`should send a valid timetable request`, () => {
-    getPersonalWeekTimetable(
+  it(`should send a valid timetable request`, async () => {
+    await getPersonalWeekTimetable(
       SAMPLE_TOKEN,
       SAMPLE_DATE,
     )
     expect(axios.get).toHaveBeenCalledTimes(5)
     expect(axios.get.mock.calls).toMatchSnapshot()
   })
-  it(`should throw error if date is invalid`, () => {
+  it(`should throw error if date is invalid`, async () => {
     try {
-      getPersonalWeekTimetable(
+      await getPersonalWeekTimetable(
         SAMPLE_TOKEN,
         null,
       )
@@ -34,7 +34,7 @@ describe(`timetable`, () => {
     }
 
     try {
-      getPersonalWeekTimetable(
+      await getPersonalWeekTimetable(
         SAMPLE_TOKEN,
         WRONG_DATE,
       )
