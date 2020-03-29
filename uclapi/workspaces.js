@@ -18,8 +18,8 @@ const cleanWorkspaces = workspaces => workspaces.map(
   })).filter(({ name }) => {
     const lowercaseName = name.toLowerCase()
     return (
-      name.indexOf(`dev testing`) === -1
-      || name.indexOf(`new layout`) === -1
+      lowercaseName.indexOf(`dev testing`) === -1
+      || lowercaseName.indexOf(`new layout`) === -1
     )
   })
 

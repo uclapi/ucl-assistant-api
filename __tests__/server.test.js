@@ -8,6 +8,8 @@ const app = require(`../server`)
 
 const indexRoutes = require(`../constants/indexRoutes`)
 
+jest.setTimeout(1000 * 60 * 10) // bootstrapping takes a while
+
 describe(`test server`, () => {
 
   let server

@@ -16,6 +16,9 @@ describe(`timetable`, () => {
     process.env.UCLAPI_CLIENT_SECRET = SAMPLE_CLIENT_SECRET
   })
   it(`should send a valid timetable request`, async () => {
+    axios.get.mockResolvedValue({ data: { timetable: { day: `event` } } })
+    expect.assertions(2)
+
     await getPersonalWeekTimetable(
       SAMPLE_TOKEN,
       SAMPLE_DATE,

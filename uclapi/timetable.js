@@ -22,6 +22,7 @@ const getPersonalWeekTimetable = async (token, date = null) => {
   const weekdays = [...new Array(5)].map(
     (v, index) => momentDate.clone().add(index, `days`).format(`YYYY-MM-DD`),
   )
+
   return {
     lastModified: (new Date()).toUTCString(),
     data: {
