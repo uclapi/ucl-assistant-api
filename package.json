@@ -32,7 +32,7 @@
     "testURL": "http://localhost/"
   },
   "dependencies": {
-    "@sentry/node": "^5.15.5",
+    "@sentry/node": "^5.17.0",
     "axios": "^0.19.2",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.12.1",
