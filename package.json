@@ -35,7 +35,7 @@
     "@sentry/node": "^5.15.5",
     "axios": "^0.19.2",
     "jsonwebtoken": "^8.5.1",
-    "koa": "^2.12.1",
+    "koa": "^2.13.0",
     "koa-bodyparser": "^4.3.0",
     "koa-jwt": "^3.6.0",
     "koa-mount": "^4.0.0",
