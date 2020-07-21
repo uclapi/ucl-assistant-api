@@ -37,10 +37,10 @@
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.0",
     "koa-bodyparser": "^4.3.0",
-    "koa-jwt": "^3.6.0",
+    "koa-jwt": "^4.0.0",
     "koa-mount": "^4.0.0",
-    "koa-router": "^8.0.8",
-    "koa-session": "^5.13.1",
+    "koa-router": "^9.1.0",
+    "koa-session": "^6.0.0",
     "moment": "^2.27.0",
     "node-fetch": "^2.6.0",
     "redis": "^3.0.2"
