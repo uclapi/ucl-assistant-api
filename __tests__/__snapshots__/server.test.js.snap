@@ -115,10 +115,6 @@ Array [
     "name": "Master Library",
   },
   Object {
-    "id": 89,
-    "name": "Master All",
-  },
-  Object {
     "id": 64,
     "name": "Gordon SQ 31-34 & 14 Taviton Street 501",
   },
@@ -165,6 +161,10 @@ Array [
   Object {
     "id": 75,
     "name": "Central House LG05",
+  },
+  Object {
+    "id": 90,
+    "name": "Bidborough House",
   },
   Object {
     "id": 82,
@@ -346,6 +346,10 @@ Array [
   Object {
     "id": 75,
     "name": "Central House LG05",
+  },
+  Object {
+    "id": 90,
+    "name": "Bidborough House",
   },
   Object {
     "id": 82,
