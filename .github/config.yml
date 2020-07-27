@@ -1,0 +1,19 @@
+version: 2
+update_configs:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      timezone: "Europe/London"
+    reviewers:
+      - "hueyy"
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      timezone: "Europe/London"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      timezone: "Europe/London"
