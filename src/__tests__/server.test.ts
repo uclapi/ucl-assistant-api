@@ -1,18 +1,12 @@
-/**
- * @jest-environment node
- * https://github.com/axios/axios/issues/1754#issuecomment-435784235
- */
 import request from 'supertest'
 import indexRoutes from '../constants/indexRoutes'
 import app from '../server'
-
-jest.setTimeout(1000 * 60 * 10) // bootstrapping takes a while
 
 describe(`test server`, () => {
   let server
 
   beforeAll(() => {
-    server = app.listen()
+    server = app.listen(3001)
   })
 
   afterAll(() => {

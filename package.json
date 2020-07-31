@@ -15,7 +15,7 @@
     "start:dev": "nodemon -e ts --ignore __tests__ --exec npm run babel-node",
     "start:prod": "node dist/server.js",
     "test": "TEST_MODE=true jest --ci && codecov",
-    "test:dev": "TEST_MODE=true jest --watch"
+    "test:dev": "TEST_MODE=true jest --setupFiles dotenv/config --watch"
   },
   "husky": {
     "hooks": {
@@ -31,6 +31,7 @@
     ]
   },
   "jest": {
+    "testEnvironment": "node",
     "testPathIgnorePatterns": [
       "<rootDir>/dist/",
       "<rootDir>/node_modules/"

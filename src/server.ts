@@ -60,7 +60,7 @@ if (process.env.TEST_MODE !== `true`) {
     process.exit(1)
   }
 
-  if (connectionString.startsWith(`rediss://`)) {
+  if (connectionString.startsWith(`redis://`)) {
     app.context.redisClient = redis.createClient(connectionString, {
       tls: { servername: new URL(connectionString).hostname },
     })
