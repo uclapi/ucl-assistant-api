@@ -26,4 +26,5 @@ jobs:
             ${{ runner.os }}-node-
       - run: npm ci
       - run: npm run build
+      - run: echo '${{ secrets.DOT_ENV }}' > .env
       - run: npm run test
