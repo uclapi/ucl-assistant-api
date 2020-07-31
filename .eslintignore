@@ -1,1 +1,4 @@
 node_modules
+dist
+!.eslintrc.js
+tsconfig.json
