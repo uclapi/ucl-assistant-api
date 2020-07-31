@@ -1,12 +1,14 @@
+import { Context, Next } from 'koa'
 import ErrorManager from '../lib/ErrorManager'
-export * as auth from './auth'
+import * as auth from './auth'
+export { auth }
 
 /**
  * Middleware that records the response time of the request
  * @param  {Koa.ctx}   ctx Koa context
  * @param  {Function} next async function to call next
  */
-export const timer = async (ctx, next) => {
+export const timer = async (ctx: Context, next: Next): Promise<void> => {
   const start = new Date().getTime()
   await next()
   const ms = new Date().getTime() - start
@@ -18,7 +20,7 @@ export const timer = async (ctx, next) => {
  * @param  {Koa.ctx}   ctx Koa context
  * @param  {Function} next async function to call next
  */
-export const logger = async (ctx, next) => {
+export const logger = async (ctx: Context, next: Next): Promise<void> => {
   ErrorManager.addDetail({
     method: ctx.method,
     url: ctx.url,
@@ -29,7 +31,7 @@ export const logger = async (ctx, next) => {
   await next()
 }
 
-export const jsonFormatPretty = ctx =>
+export const jsonFormatPretty = (ctx: Context): string =>
   JSON.stringify(
     {
       content: ctx.body,
@@ -39,7 +41,7 @@ export const jsonFormatPretty = ctx =>
     2,
   )
 
-const jsonFormat = ctx =>
+const jsonFormat = (ctx: Context): string =>
   JSON.stringify({
     content: ctx.body,
     error: ctx.error || ``,
@@ -50,7 +52,7 @@ const jsonFormat = ctx =>
  * @param  {Koa.ctx}   ctx Koa context
  * @param  {Function} next async function to call next
  */
-export const jsonify = async (ctx, next) => {
+export const jsonify = async (ctx: Context, next: Next): Promise<void> => {
   ctx.state.jsonify = true
   try {
     await next()

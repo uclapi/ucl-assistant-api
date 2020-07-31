@@ -90,3 +90,9 @@ export const getModuleTimetable = async (token, timetableModule) => {
     data,
   }
 }
+
+export default {
+  getModuleTimetable,
+  getPersonalTimetable,
+  getPersonalWeekTimetable,
+}

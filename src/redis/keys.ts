@@ -3,7 +3,7 @@ const PEOPLE_PATH = `/people`
 const ROOMS_PATH = `/rooms`
 const TIMETABLE_PATH = `/timetable`
 const SITES_PATH = `/sites`
-module.exports = {
+export default {
   TIMETABLE_PERSONAL_PATH: `${TIMETABLE_PATH}/personal`,
   TIMETABLE_MODULE_PATH: `${TIMETABLE_PATH}/module`,
   WORKSPACE_SURVEYS_PATH: `${WORKSPACE_PATH}/surveys`,

@@ -1,8 +1,8 @@
-const Router = require(`koa-router`)
-const authorise = require(`./authorise`)
-const callback = require(`./callback`)
+import Router from 'koa-router'
+import authorise from './authorise'
+import callback from './callback'
 
-module.exports = app => {
+export default (app: Router): void => {
   const router = new Router({
     prefix: `/connect/uclapi`,
   })

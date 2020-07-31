@@ -4,7 +4,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: Dockerfile.development
+      dockerfile: Dockerfile
     image: ucl-assistant-api
     env_file: .env
     ports:

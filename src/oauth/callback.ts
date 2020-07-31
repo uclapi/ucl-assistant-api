@@ -1,8 +1,10 @@
-const querystring = require(`querystring`)
-const { genToken } = require(`../middleware/auth`)
-const { getToken, getUserData } = require(`../uclapi/user`)
+import { Context } from 'koa'
+import querystring from 'querystring'
+import { genToken } from '../middleware/auth'
+import User from '../uclapi/user'
+const { getToken, getUserData } = User
 
-module.exports = async ctx => {
+const callback = async (ctx: Context): Promise<void> => {
   if (!Object.keys(ctx.session).includes(`state`)) {
     ctx.throw(`You need to authorise first`, 401)
   }
@@ -48,3 +50,5 @@ module.exports = async ctx => {
   const query = querystring.stringify(queryObj)
   ctx.redirect(`${ctx.session.redirectURL}?${query}`)
 }
+
+export default callback

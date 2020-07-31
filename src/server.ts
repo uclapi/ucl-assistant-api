@@ -1,8 +1,3 @@
-if (process.env.NODE_ENV !== `production`) {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  require(`dotenv`).config()
-}
-
 import fs from 'fs'
 import Koa from 'koa'
 import bodyparser from 'koa-bodyparser'

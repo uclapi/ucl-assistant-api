@@ -1,8 +1,8 @@
-const axios = require(`axios`)
+import axios from 'axios'
 
 const { NOTIFICATIONS_URL } = process.env
 
-const register = async (upi, pushToken) => {
+const register = async (upi: string, pushToken: string): Promise<void> => {
   console.log(`registering...`)
   try {
     await axios.post(`${NOTIFICATIONS_URL}/register`, {
@@ -18,14 +18,14 @@ const register = async (upi, pushToken) => {
 }
 
 const sendNotification = async (
-  upi,
+  upi: string,
   notification = {
     title: `UCL Assistant`,
     content: ``,
     type: `default`,
     path: `/`,
   },
-) => {
+): Promise<void> => {
   try {
     await axios.post(`${NOTIFICATIONS_URL}/upi/${upi}/`, {
       ...notification,
@@ -38,7 +38,7 @@ const sendNotification = async (
   }
 }
 
-module.exports = {
+export default {
   register,
   sendNotification,
 }

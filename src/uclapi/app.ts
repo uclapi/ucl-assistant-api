@@ -1,42 +1,17 @@
 import Koa from 'koa'
 import Router from 'koa-router'
 import { jwt } from '../middleware/auth'
-import { loadOrFetch } from '../redis'
-import {
-  PEOPLE_SEARCH_PATH,
-  ROOMS_SEARCH_PATH,
-  SITES_SEARCH_PATH,
-  TIMETABLE_MODULE_PATH,
-  TIMETABLE_PERSONAL_PATH,
-  WORKSPACE_EQUIPMENT_PATH,
-  WORKSPACE_HISTORIC_DATA_PATH,
-  WORKSPACE_SUMMARY_PATH,
-  WORKSPACE_SURVEYS_PATH,
-} from '../redis/keys'
-import {
-  PEOPLE_SEARCH_TTL,
-  ROOMS_SEARCH_TTL,
-  TIMETABLE_TTL,
-  WORKSPACE_EQUIPMENT_TTL,
-  WORKSPACE_HISTORIC_DATA_TTL,
-  WORKSPACE_SUMMARY_TTL,
-  WORKSPACE_SURVEYS_TTL,
-} from '../redis/ttl'
+import redis from '../redis'
 import { peopleSearch } from './people'
 import { getFreeRooms, getRoomBookings } from './roombookings'
 import { getEquipment, getSites, roomsSearch } from './rooms'
 import {
-  getModuleTimetable, getPersonalTimetable,
-
+  getModuleTimetable,
+  getPersonalTimetable,
   getPersonalWeekTimetable,
 } from './timetable'
 import { getUserData } from './user'
-import {
-  getAllSeatInfo,
-  getHistoricSeatInfo, getImage,
-  getLiveImage,
-  getSeatingInfo, getWorkspaces,
-} from './workspaces'
+import Workspaces from './workspaces'
 
 const app = new Koa()
 const router = new Router()
@@ -48,11 +23,11 @@ router.get(`/user`, jwt, async ctx => {
 router.get(`/timetable`, jwt, async ctx => {
   const date = ctx.query.date || null
 
-  const timetableData = await loadOrFetch(
+  const timetableData = await redis.loadOrFetch(
     ctx,
-    `${TIMETABLE_PERSONAL_PATH}/${ctx.state.user.upi}/${date}`,
+    `${redis.keys.TIMETABLE_PERSONAL_PATH}/${ctx.state.user.upi}/${date}`,
     async () => getPersonalTimetable(ctx.state.user.apiToken, date),
-    TIMETABLE_TTL,
+    redis.ttl.TIMETABLE_TTL,
   )
 
   const { lastModified, data } = timetableData
@@ -63,11 +38,11 @@ router.get(`/timetable`, jwt, async ctx => {
 router.get(`/timetable/week`, jwt, async ctx => {
   const date = ctx.query.date || null
 
-  const timetableData = await loadOrFetch(
+  const timetableData = await redis.loadOrFetch(
     ctx,
-    `${TIMETABLE_PERSONAL_PATH}/${ctx.state.user.upi}/week/${date}`,
+    `${redis.keys.TIMETABLE_PERSONAL_PATH}/${ctx.state.user.upi}/week/${date}`,
     async () => getPersonalWeekTimetable(ctx.state.user.apiToken, date),
-    TIMETABLE_TTL,
+    redis.ttl.TIMETABLE_TTL,
   )
 
   const { lastModified, data } = timetableData
@@ -80,14 +55,14 @@ router.get(`/timetable/:module`, jwt, async ctx => {
   const { module: timetableModule } = ctx.params
   const date = ctx.query.date || null
 
-  const timetableData = await loadOrFetch(
+  const timetableData = await redis.loadOrFetch(
     ctx,
-    `${TIMETABLE_MODULE_PATH}/${timetableModule}/${date}`,
+    `${redis.keys.TIMETABLE_MODULE_PATH}/${timetableModule}/${date}`,
     async () => getModuleTimetable(
       ctx.state.user.apiToken,
       timetableModule,
     ),
-    TIMETABLE_TTL,
+    redis.ttl.TIMETABLE_TTL,
   )
 
   const { lastModified, data } = timetableData
@@ -101,11 +76,11 @@ router.get(`/search/people`, jwt, async ctx => {
     400,
     `Query must be at least three characters long`,
   )
-  const data = await loadOrFetch(
+  const data = await redis.loadOrFetch(
     ctx,
-    `${PEOPLE_SEARCH_PATH}/${ctx.query.query}`,
+    `${redis.keys.PEOPLE_SEARCH_PATH}/${ctx.query.query}`,
     async () => peopleSearch(ctx.query.query),
-    PEOPLE_SEARCH_TTL,
+    redis.ttl.PEOPLE_SEARCH_TTL,
   )
   ctx.body = data
 })
@@ -116,42 +91,44 @@ router.get(`/search/rooms`, jwt, async ctx => {
     400,
     `Query must be at least four characters long`,
   )
-  const data = await loadOrFetch(
+  const data = await redis.loadOrFetch(
     ctx,
-    `${ROOMS_SEARCH_PATH}/${ctx.query.query}`,
+    `${redis.keys.ROOMS_SEARCH_PATH}/${ctx.query.query}`,
     async () => roomsSearch(ctx.query.query),
-    ROOMS_SEARCH_TTL,
+    redis.ttl.ROOMS_SEARCH_TTL,
   )
   ctx.body = data
 })
 
 router.get(`/sites`, jwt, async ctx => {
-  const rooms = await loadOrFetch(
+  const rooms = await redis.loadOrFetch(
     ctx,
-    SITES_SEARCH_PATH,
+    redis.keys.SITES_SEARCH_PATH,
     async () => getSites(),
-    ROOMS_SEARCH_TTL,
+    redis.ttl.ROOMS_SEARCH_TTL,
   )
   ctx.body = rooms
 })
 
 router.get(`/equipment`, jwt, async ctx => {
-  ctx.assert(ctx.query.roomid, `Must specify roomid`)
-  ctx.assert(ctx.query.siteid, `Must specify siteid`)
-  const data = await loadOrFetch(
+  ctx.assert(ctx.query.roomid, 400, `Must specify roomid`)
+  ctx.assert(ctx.query.siteid, 400, `Must specify siteid`)
+  const data = await redis.loadOrFetch(
     ctx,
-    `${WORKSPACE_EQUIPMENT_PATH}/${ctx.query.roomid}/${ctx.query.siteid}`,
+    `${
+      redis.keys.WORKSPACE_EQUIPMENT_PATH
+    }/${ctx.query.roomid}/${ctx.query.siteid}`,
     async () => getEquipment(ctx.query.roomid, ctx.query.siteid),
-    WORKSPACE_EQUIPMENT_TTL,
+    redis.ttl.WORKSPACE_EQUIPMENT_TTL,
   )
   ctx.body = data
 })
 
 router.get(`/workspaces/getimage/:id.png`, jwt, async ctx => {
-  ctx.assert(ctx.params.id, 400)
+  ctx.assert(ctx.params.id, 400, `Must specify id`)
   ctx.set({ "Content-Type": `image/png` })
   ctx.state.jsonify = false
-  const res = await getImage(ctx.params.id)
+  const res = await Workspaces.getImage(ctx.params.id)
   ctx.body = res.body
 })
 
@@ -160,7 +137,7 @@ router.get(`/workspaces/getliveimage/map.svg`, jwt, async ctx => {
   ctx.assert(ctx.query.map_id)
   ctx.set({ "Content-Type": `image/svg+xml` })
   ctx.state.jsonify = false
-  const res = await getLiveImage({
+  const res = await Workspaces.getLiveImage({
     surveyId: ctx.query.survey_id,
     mapId: ctx.query.map_id,
     circleRadius: ctx.query.circle_radius,
@@ -171,11 +148,11 @@ router.get(`/workspaces/getliveimage/map.svg`, jwt, async ctx => {
 })
 
 router.get(`/workspaces/summary`, jwt, async ctx => {
-  const { data, lastModified } = await loadOrFetch(
+  const { data, lastModified } = await redis.loadOrFetch(
     ctx,
-    WORKSPACE_SUMMARY_PATH,
-    async () => getAllSeatInfo(),
-    WORKSPACE_SUMMARY_TTL,
+    redis.keys.WORKSPACE_SUMMARY_PATH,
+    async () => Workspaces.getAllSeatInfo(),
+    redis.ttl.WORKSPACE_SUMMARY_TTL,
   )
   ctx.body = data
   ctx.set(`Last-Modified`, lastModified)
@@ -183,29 +160,29 @@ router.get(`/workspaces/summary`, jwt, async ctx => {
 
 router.get(`/workspaces/historic`, jwt, async ctx => {
   ctx.assert(ctx.query.id, 400, `Need to include a survey id.`)
-  const data = await loadOrFetch(
+  const data = await redis.loadOrFetch(
     ctx,
-    `${WORKSPACE_HISTORIC_DATA_PATH}/${ctx.query.id}`,
-    async () => getHistoricSeatInfo(ctx.query.id),
-    WORKSPACE_HISTORIC_DATA_TTL,
+    `${redis.keys.WORKSPACE_HISTORIC_DATA_PATH}/${ctx.query.id}`,
+    async () => Workspaces.getHistoricSeatInfo(ctx.query.id),
+    redis.ttl.WORKSPACE_HISTORIC_DATA_TTL,
   )
   ctx.body = data
 })
 
 router.get(`/workspaces/:id/seatinfo`, jwt, async ctx => {
   ctx.assert(ctx.params.id, 400)
-  ctx.body = await getSeatingInfo(ctx.params.id)
+  ctx.body = await Workspaces.getSeatingInfo(ctx.params.id)
 })
 
 router.get(`/workspaces`, jwt, async ctx => {
   const surveyFilter = ctx.query.survey_filter
     ? ctx.query.survey_filter
     : `student`
-  ctx.body = await loadOrFetch(
+  ctx.body = await redis.loadOrFetch(
     ctx,
-    `${WORKSPACE_SURVEYS_PATH}/${surveyFilter}`,
-    async () => getWorkspaces(surveyFilter),
-    WORKSPACE_SURVEYS_TTL,
+    `${redis.keys.WORKSPACE_SURVEYS_PATH}/${surveyFilter}`,
+    async () => Workspaces.getWorkspaces(surveyFilter),
+    redis.ttl.WORKSPACE_SURVEYS_TTL,
   )
 })
 

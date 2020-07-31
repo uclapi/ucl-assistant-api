@@ -34,6 +34,6 @@ const loadOrFetch = async (ctx, key, fetchNewData, ttl) => {
   return newData
 }
 
-module.exports = {
+export default {
   loadOrFetch,
 }

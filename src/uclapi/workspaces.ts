@@ -6,7 +6,7 @@ import ApiRoutes from '../constants/apiRoutes'
 const DEFAULT_ABSENT_COLOUR = `#00FF00`
 const DEFAULT_OCCUPIED_COLOUR = `#880000`
 
-const cleanWorkspaces = workspaces => workspaces.map(
+export const cleanWorkspaces = workspaces => workspaces.map(
   ({ name, ...attributes }) => ({
     ...attributes,
     name: name.replace(/"/g, ``),
@@ -18,7 +18,7 @@ const cleanWorkspaces = workspaces => workspaces.map(
     )
   })
 
-const getWorkspaces = async (surveyFilter = `student`) => {
+export const getWorkspaces = async (surveyFilter = `student`) => {
   const { data: { surveys } } = (await axios.get(
     ApiRoutes.WORKSPACE_SURVEYS_URL,
     {
@@ -31,7 +31,7 @@ const getWorkspaces = async (surveyFilter = `student`) => {
   return cleanWorkspaces(surveys)
 }
 
-const getImage = imageId =>
+export const getImage = imageId =>
   fetch(
     `${ApiRoutes.WORKSPACE_IMAGE_URL}?token=${
     process.env.UCLAPI_TOKEN
@@ -67,7 +67,7 @@ const getLiveImage = ({
  *
  * @param {any} maps
  */
-const reduceSeatInfo = maps =>
+export const reduceSeatInfo = maps =>
   maps.reduce(
     (obj, map) => {
       const mapCapacity =
@@ -83,7 +83,7 @@ const reduceSeatInfo = maps =>
     },
   )
 
-const getSeatingInfo = async surveyId => {
+export const getSeatingInfo = async surveyId => {
   const { data } = (await axios.get(
     ApiRoutes.WORKSPACE_SUMMARY_URL,
     {
@@ -100,7 +100,7 @@ const getSeatingInfo = async surveyId => {
   return reduceSeatInfo(surveys[0].maps)
 }
 
-const reduceAverageData = averages => {
+export const reduceAverageData = averages => {
   const returnArray = Array.from(Array(24)).map(() => 0)
   const hours = Object.keys(averages).map(time => ({
     time,
@@ -125,7 +125,7 @@ const reduceAverageData = averages => {
   })
 }
 
-const getHistoricSeatInfo = async surveyId => {
+export const getHistoricSeatInfo = async surveyId => {
   const { data: { surveys } } = (await axios.get(
     ApiRoutes.WORKSPACE_HISTORIC_URL,
     {
@@ -146,7 +146,7 @@ const getHistoricSeatInfo = async surveyId => {
   return reduceAverageData(averages)
 }
 
-const getAllSeatInfo = async () => {
+export const getAllSeatInfo = async () => {
   const { data: { surveys }, headers } = (await axios.get(
     ApiRoutes.WORKSPACE_SUMMARY_URL,
     {
@@ -184,7 +184,7 @@ const getAllSeatInfo = async () => {
   }
 }
 
-module.exports = {
+export default {
   reduceAverageData,
   getWorkspaces,
   getImage,

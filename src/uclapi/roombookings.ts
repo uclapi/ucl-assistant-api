@@ -1,13 +1,10 @@
-const moment = require(`moment`)
-const {
-  ROOMBOOKINGS_DATA_URL,
-  ROOMBOOKINGS_FREEROOMS_URL,
-} = require(`../constants/apiRoutes`)
-const axios = require(`axios`)
+import axios from 'axios'
+import moment from 'moment'
+import ApiRoutes from '../constants/apiRoutes'
 
 const { UCLAPI_TOKEN } = process.env
 
-const getRoomBookings = async ({ roomid, siteid, date }) => {
+export const getRoomBookings = async ({ roomid, siteid, date }) => {
   if (!roomid) {
     throw new Error(`Must provide a roomid!`)
   }
@@ -15,7 +12,7 @@ const getRoomBookings = async ({ roomid, siteid, date }) => {
     throw new Error(`Must provide a siteid`)
   }
 
-  return (await axios.get(ROOMBOOKINGS_DATA_URL, {
+  return (await axios.get(ApiRoutes.ROOMBOOKINGS_DATA_URL, {
     params: {
       token: UCLAPI_TOKEN,
       roomid,
@@ -25,14 +22,14 @@ const getRoomBookings = async ({ roomid, siteid, date }) => {
   })).data
 }
 
-const getFreeRooms = async (
+export const getFreeRooms = async (
   startDateTime = new Date().toISOString(),
   endDateTime = moment()
     .endOf(`day`)
     .toISOString(),
 ) => {
 
-  return (await axios.get(ROOMBOOKINGS_FREEROOMS_URL, {
+  return (await axios.get(ApiRoutes.ROOMBOOKINGS_FREEROOMS_URL, {
     params: {
       token: UCLAPI_TOKEN,
       start_datetime: startDateTime,
@@ -41,7 +38,7 @@ const getFreeRooms = async (
   })).data
 }
 
-module.exports = {
+export default {
   getRoomBookings,
   getFreeRooms,
 }
