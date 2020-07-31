@@ -1,9 +1,8 @@
-const Koa = require(`koa`)
-const Router = require(`koa-router`)
-
-const oauth = require(`./oauth`)
-const { jwt } = require(`./middleware/auth`)
-const indexRoutes = require(`./constants/indexRoutes`)
+import Koa from 'koa'
+import Router from 'koa-router'
+import indexRoutes from './constants/indexRoutes'
+import { jwt } from './middleware/auth'
+import oauth from './oauth'
 
 const app = new Koa()
 const router = new Router()
@@ -37,4 +36,5 @@ router.get(/.*/, async ctx => {
 
 app.use(router.routes())
 app.use(router.allowedMethods())
-module.exports = app
+
+export default app

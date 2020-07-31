@@ -2,16 +2,13 @@
  * @jest-environment node
  * https://github.com/axios/axios/issues/1754#issuecomment-435784235
  */
-require(`dotenv`).config()
-const request = require(`supertest`)
-const app = require(`../server`)
-
-const indexRoutes = require(`../constants/indexRoutes`)
+import request from 'supertest'
+import indexRoutes from '../constants/indexRoutes'
+import app from '../server'
 
 jest.setTimeout(1000 * 60 * 10) // bootstrapping takes a while
 
 describe(`test server`, () => {
-
   let server
 
   beforeAll(() => {
@@ -23,21 +20,23 @@ describe(`test server`, () => {
   })
 
   it(`responds with route indexes at /`, async () => {
-    return await request(server)
+    await request(server)
       .get(`/`)
       .expect(200, {
         content: indexRoutes,
         error: ``,
       })
+    expect.assertions(0)
   })
 
   it(`should pong when we ping`, async () => {
-    return await request(server)
+    await request(server)
       .get(`/ping`)
       .expect(200, {
         content: `pong!`,
         error: ``,
       })
+    expect.assertions(0)
   })
 
   it(`returns list of workspaces at /workspaces`, async () => {
@@ -58,9 +57,9 @@ describe(`test server`, () => {
         name,
       }))).toMatchSnapshot()
       body.content.forEach(workspace => {
-        expect(workspace.maps.reduce(
-          (acc, cur) => acc + cur.occupied, 0) === workspace.occupied,
-        )
+        expect(
+          workspace.maps.reduce((acc, cur) => acc + cur.occupied, 0),
+        ).toBe(workspace.occupied)
       })
     })
 })

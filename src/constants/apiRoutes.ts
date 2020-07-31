@@ -3,7 +3,7 @@ const TIMETABLE_BASE_URL = `${API_URL}/timetable`
 const WORKSPACES_BASE_URL = `${API_URL}/workspaces`
 const ROOMBOOKINGS_BASE_URL = `${API_URL}/roombookings`
 
-module.exports = {
+export default {
   API_URL,
   USER_TOKEN_URL: `${API_URL}/oauth/token`,
   USER_DATA_URL: `${API_URL}/oauth/user/data`,

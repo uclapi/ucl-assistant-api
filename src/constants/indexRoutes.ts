@@ -85,4 +85,4 @@ const indexRoutes = {
   },
 }
 
-module.exports = indexRoutes
+export default indexRoutes

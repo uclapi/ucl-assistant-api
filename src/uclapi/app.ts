@@ -1,44 +1,42 @@
-const Koa = require(`koa`)
-const Router = require(`koa-router`)
-const { jwt } = require(`../middleware/auth`)
-const { getUserData } = require(`./user`)
-const {
-  getPersonalTimetable,
-  getModuleTimetable,
-  getPersonalWeekTimetable,
-} = require(`./timetable`)
-const { peopleSearch } = require(`./people`)
-const { roomsSearch, getEquipment, getSites } = require(`./rooms`)
-const { loadOrFetch } = require(`../redis`)
-const { getRoomBookings, getFreeRooms } = require(`./roombookings`)
-const {
-  getWorkspaces,
-  getImage,
-  getLiveImage,
-  getSeatingInfo,
-  getAllSeatInfo,
-  getHistoricSeatInfo,
-} = require(`./workspaces`)
-const {
-  WORKSPACE_SUMMARY_PATH,
-  WORKSPACE_HISTORIC_DATA_PATH,
-  WORKSPACE_SURVEYS_PATH,
-  WORKSPACE_EQUIPMENT_PATH,
+import Koa from 'koa'
+import Router from 'koa-router'
+import { jwt } from '../middleware/auth'
+import { loadOrFetch } from '../redis'
+import {
   PEOPLE_SEARCH_PATH,
   ROOMS_SEARCH_PATH,
-  TIMETABLE_PERSONAL_PATH,
-  TIMETABLE_MODULE_PATH,
   SITES_SEARCH_PATH,
-} = require(`../redis/keys`)
-const {
-  WORKSPACE_SUMMARY_TTL,
-  WORKSPACE_HISTORIC_DATA_TTL,
-  WORKSPACE_SURVEYS_TTL,
-  WORKSPACE_EQUIPMENT_TTL,
+  TIMETABLE_MODULE_PATH,
+  TIMETABLE_PERSONAL_PATH,
+  WORKSPACE_EQUIPMENT_PATH,
+  WORKSPACE_HISTORIC_DATA_PATH,
+  WORKSPACE_SUMMARY_PATH,
+  WORKSPACE_SURVEYS_PATH,
+} from '../redis/keys'
+import {
   PEOPLE_SEARCH_TTL,
   ROOMS_SEARCH_TTL,
   TIMETABLE_TTL,
-} = require(`../redis/ttl`)
+  WORKSPACE_EQUIPMENT_TTL,
+  WORKSPACE_HISTORIC_DATA_TTL,
+  WORKSPACE_SUMMARY_TTL,
+  WORKSPACE_SURVEYS_TTL,
+} from '../redis/ttl'
+import { peopleSearch } from './people'
+import { getFreeRooms, getRoomBookings } from './roombookings'
+import { getEquipment, getSites, roomsSearch } from './rooms'
+import {
+  getModuleTimetable, getPersonalTimetable,
+
+  getPersonalWeekTimetable,
+} from './timetable'
+import { getUserData } from './user'
+import {
+  getAllSeatInfo,
+  getHistoricSeatInfo, getImage,
+  getLiveImage,
+  getSeatingInfo, getWorkspaces,
+} from './workspaces'
 
 const app = new Koa()
 const router = new Router()
@@ -130,7 +128,7 @@ router.get(`/search/rooms`, jwt, async ctx => {
 router.get(`/sites`, jwt, async ctx => {
   const rooms = await loadOrFetch(
     ctx,
-    `${SITES_SEARCH_PATH}`,
+    SITES_SEARCH_PATH,
     async () => getSites(),
     ROOMS_SEARCH_TTL,
   )
@@ -233,4 +231,4 @@ router.get(`/freerooms`, jwt, async ctx => {
 app.use(router.routes())
 app.use(router.allowedMethods())
 
-module.exports = app
+export default app

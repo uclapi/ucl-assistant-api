@@ -1,8 +1,5 @@
-const axios = require(`axios`)
-
-const {
-  getPersonalWeekTimetable,
-} = require(`../uclapi/timetable`)
+import axios from 'axios'
+import { getPersonalWeekTimetable } from '../uclapi/timetable'
 
 const SAMPLE_TOKEN = `eySFsfef`
 const SAMPLE_DATE = `2020-01-13`
@@ -16,7 +13,9 @@ describe(`timetable`, () => {
     process.env.UCLAPI_CLIENT_SECRET = SAMPLE_CLIENT_SECRET
   })
   it(`should send a valid timetable request`, async () => {
-    axios.get.mockResolvedValue({ data: { timetable: { day: `event` } } })
+    (<jest.Mock>axios.get).mockResolvedValue({
+      data: { timetable: { day: `event` } },
+    })
     expect.assertions(2)
 
     await getPersonalWeekTimetable(
@@ -24,25 +23,17 @@ describe(`timetable`, () => {
       SAMPLE_DATE,
     )
     expect(axios.get).toHaveBeenCalledTimes(5)
-    expect(axios.get.mock.calls).toMatchSnapshot()
+    expect((<jest.Mock>axios.get).mock.calls).toMatchSnapshot()
   })
   it(`should throw error if date is invalid`, async () => {
-    try {
-      await getPersonalWeekTimetable(
-        SAMPLE_TOKEN,
-        null,
-      )
-    } catch (error) {
-      expect(error).toMatchSnapshot()
-    }
+    await expect(() => getPersonalWeekTimetable(
+      SAMPLE_TOKEN,
+      null,
+    )).rejects.toThrow()
 
-    try {
-      await getPersonalWeekTimetable(
-        SAMPLE_TOKEN,
-        WRONG_DATE,
-      )
-    } catch (error) {
-      expect(error).toMatchSnapshot()
-    }
+    await expect(() => getPersonalWeekTimetable(
+      SAMPLE_TOKEN,
+      WRONG_DATE,
+    )).rejects.toThrow()
   })
 })

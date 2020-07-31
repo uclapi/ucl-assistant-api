@@ -1,7 +1,7 @@
-const koaJwt = require(`koa-jwt`)
-const jwt = require(`jsonwebtoken`)
+import jsonwebtoken from 'jsonwebtoken'
+import koaJwt from 'koa-jwt'
 
-const authenticate = async (ctx, next) => {
+export const authenticate = async (ctx, next) => {
   if (ctx.session.isNew) {
     ctx.throw(`You need to be authenticated to access this endpoint`, 401)
   } else {
@@ -22,15 +22,12 @@ const jwtVerifyDev = async (ctx, next) => {
   return await next()
 }
 
-const genToken = user => jwt.sign(user, process.env.SECRET)
+export const genToken = user => jsonwebtoken.sign(user, process.env.SECRET)
 
 const shouldBypassAuthentication = (
   process.env.NODE_ENV === `development` ||
   process.env.TEST_MODE === `true`
 )
 
-module.exports = {
-  authenticate,
-  jwt: shouldBypassAuthentication ? jwtVerifyDev : jwtVerify,
-  genToken,
-}
+export const jwt = shouldBypassAuthentication ? jwtVerifyDev : jwtVerify
+

@@ -6,12 +6,14 @@
   "repository": "https://github.com/uclapi/ucl-assistant",
   "license": "MIT",
   "author": "UCL API <isd.apiteam@ucl.ac.uk>",
-  "main": "server.js",
+  "main": "src/server.js",
   "scripts": {
-    "format": "eslint . --fix --ext .js --ignore-path .eslintignore",
+    "babel-node": "babel-node src/server.ts --extensions \".ts\"",
+    "build": "babel src -d dist --extensions \".ts\" --copy-files --source-maps",
+    "format": "eslint src --fix --ext .js --ignore-path .eslintignore",
     "lint:staged": "lint-staged",
-    "start": "node server.js",
-    "start:dev": "nodemon server --ignore __tests__",
+    "start:dev": "nodemon -e ts --ignore __tests__ --exec npm run babel-node",
+    "start:prod": "node dist/server.js",
     "test": "TEST_MODE=true jest --ci && codecov",
     "test:dev": "TEST_MODE=true jest --watch"
   },
@@ -21,15 +23,22 @@
     }
   },
   "lint-staged": {
-    "*.{js}": [
+    "*.{js,ts,json}": [
       "eslint --fix"
+    ],
+    "*.{ts}": [
+      "tsc --allowSyntheticDefaultImports --noEmit --esModuleInterop --moduleResolution node --skipLibCheck --resolveJsonModule"
     ]
   },
   "jest": {
     "testPathIgnorePatterns": [
+      "<rootDir>/dist/",
       "<rootDir>/node_modules/"
     ],
-    "testURL": "http://localhost/"
+    "testURL": "http://localhost/",
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    }
   },
   "dependencies": {
     "@sentry/node": "^5.20.1",
@@ -46,12 +55,22 @@
     "redis": "^3.0.2"
   },
   "devDependencies": {
-    "babel-eslint": "^10.1.0",
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.10.5",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-typescript": "^7.10.4",
+    "@types/jest": "^26.0.7",
+    "@types/node": "^14.0.27",
+    "@typescript-eslint/eslint-plugin": "^3.7.1",
+    "@typescript-eslint/parser": "^3.7.1",
     "codecov": "^3.7.2",
     "dotenv": "^8.2.0",
     "eslint": "^7.5.0",
+    "eslint-plugin-disable": "^2.0.1",
     "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-json": "^2.1.2",
+    "eslint-plugin-jest": "^23.19.0",
+    "eslint-plugin-json-format": "^2.0.1",
     "eslint-plugin-no-secrets": "^0.6.8",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-security": "^1.4.0",
@@ -61,7 +80,9 @@
     "lint-staged": "^10.2.11",
     "nodemon": "^2.0.4",
     "sinon": "^9.0.2",
-    "supertest": "^4.0.2"
+    "supertest": "^4.0.2",
+    "ts-jest": "^26.1.4",
+    "typescript": "^3.9.7"
   },
   "engines": {
     "node": ">=12.13.0"

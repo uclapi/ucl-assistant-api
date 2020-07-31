@@ -1,23 +1,23 @@
 if (process.env.NODE_ENV !== `production`) {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   require(`dotenv`).config()
 }
 
-const fs = require(`fs`)
-const Koa = require(`koa`)
-const bodyparser = require(`koa-bodyparser`)
-const session = require(`koa-session`)
-const mount = require(`koa-mount`)
-const { jsonify, logger, timer } = require(`./middleware`)
-const URL = require(`url`)
-const redis = require(`redis`)
-const { promisify } = require(`util`)
-const ErrorManager = require(`./lib/ErrorManager`)
-const router = require(`./router`)
-const { app: UCLAPI } = require(`./uclapi`)
-const { app: notifications } = require(`./notifications`)
+import fs from 'fs'
+import Koa from 'koa'
+import bodyparser from 'koa-bodyparser'
+import mount from 'koa-mount'
+import session from 'koa-session'
+import redis from 'redis'
+import { promisify } from 'util'
+import ErrorManager from './lib/ErrorManager'
+import { jsonify, logger, timer } from './middleware'
+import Notifications from './notifications'
+import router from './router'
+import UCLAPI from './uclapi'
 
 // eslint-disable-next-line security/detect-non-literal-fs-filename
-const { version } = JSON.parse(fs.readFileSync(`./package.json`))
+const { version } = JSON.parse(fs.readFileSync(`./package.json`, `utf-8`))
 
 ErrorManager.initialise()
 
@@ -47,7 +47,7 @@ if (!process.env.SECRET) {
   )
 }
 
-if (!process.env.NOTIFICATIONS_URL) {
+if (!process.env.NOTIFICATIONS_URL && process.env.TEST_MODE !== `true`) {
   console.warn(
     `Warning: You have not set the NOTIFICATION_URL ` +
     `environment variable. This means that notification ` +
@@ -91,7 +91,7 @@ app.use(timer)
 app.use(logger)
 app.use(jsonify)
 // import and use the UCL API router.
-app.use(mount(`/notifications`, notifications))
+app.use(mount(`/notifications`, Notifications))
 app.use(mount(UCLAPI))
 app.use(mount(router))
 
@@ -103,4 +103,4 @@ if (!module.parent) {
   console.log(`UCL Assistant API listening on ${port}`)
 }
 
-module.exports = app
+export default app

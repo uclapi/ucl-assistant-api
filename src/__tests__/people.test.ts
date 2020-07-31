@@ -1,7 +1,5 @@
-const axios = require(`axios`)
-const { PEOPLE_SEARCH_URL } = require(`../constants/apiRoutes`)
-
-const { peopleSearch } = require(`../uclapi/people`)
+import axios from 'axios'
+import { peopleSearch } from '../uclapi/people'
 
 jest.mock(`axios`)
 
@@ -17,6 +15,6 @@ describe(`people`, () => {
     const query = `William McGonagall`
 
     peopleSearch(query)
-    expect(axios.get.mock.calls).toMatchSnapshot()
+    expect((axios.get as jest.Mock).mock.calls).toMatchSnapshot()
   })
 })

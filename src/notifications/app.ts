@@ -1,7 +1,7 @@
-const Koa = require(`koa`)
-const Router = require(`koa-router`)
-const api = require(`./api`)
-const { jwt } = require(`../middleware/auth`)
+import Koa from 'koa'
+import Router from 'koa-router'
+import { jwt } from '../middleware/auth'
+import api from './api'
 
 const app = new Koa()
 
@@ -35,4 +35,4 @@ router.post(`/register`, jwt, async ctx => {
 app.use(router.routes())
 app.use(router.allowedMethods())
 
-module.exports = app
+export default app

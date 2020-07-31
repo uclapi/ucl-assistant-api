@@ -1,15 +1,15 @@
-const ErrorManager = require(`../lib/ErrorManager`)
-const auth = require(`./auth`)
+import ErrorManager from '../lib/ErrorManager'
+export * as auth from './auth'
 
 /**
  * Middleware that records the response time of the request
  * @param  {Koa.ctx}   ctx Koa context
  * @param  {Function} next async function to call next
  */
-const timer = async (ctx, next) => {
-  const start = new Date()
+export const timer = async (ctx, next) => {
+  const start = new Date().getTime()
   await next()
-  const ms = new Date() - start
+  const ms = new Date().getTime() - start
   ctx.set(`x-response-time`, `${ms}ms`)
 }
 
@@ -18,7 +18,7 @@ const timer = async (ctx, next) => {
  * @param  {Koa.ctx}   ctx Koa context
  * @param  {Function} next async function to call next
  */
-const logger = async (ctx, next) => {
+export const logger = async (ctx, next) => {
   ErrorManager.addDetail({
     method: ctx.method,
     url: ctx.url,
@@ -29,14 +29,14 @@ const logger = async (ctx, next) => {
   await next()
 }
 
-const jsonFormatPretty = ctx =>
+export const jsonFormatPretty = ctx =>
   JSON.stringify(
     {
       content: ctx.body,
       error: ctx.error || ``,
     },
-    `\n`,
-    3,
+    null,
+    2,
   )
 
 const jsonFormat = ctx =>
@@ -50,7 +50,7 @@ const jsonFormat = ctx =>
  * @param  {Koa.ctx}   ctx Koa context
  * @param  {Function} next async function to call next
  */
-const jsonify = async (ctx, next) => {
+export const jsonify = async (ctx, next) => {
   ctx.state.jsonify = true
   try {
     await next()
@@ -64,7 +64,7 @@ const jsonify = async (ctx, next) => {
     if (typeof error.message === `string`) {
       ctx.error = error.message
     } else {
-      ctx.error = JSON.stringify(error.message, `\n`, 2)
+      ctx.error = JSON.stringify(error.message, null, 2)
     }
 
     if (![400, 404].includes(error.status)) {
@@ -82,11 +82,4 @@ const jsonify = async (ctx, next) => {
     ctx.body = ctx.query.pretty ? jsonFormatPretty(ctx) : jsonFormat(ctx)
     ctx.set({ "Content-Type": `application/json` })
   }
-}
-
-module.exports = {
-  jsonify,
-  logger,
-  timer,
-  auth,
 }

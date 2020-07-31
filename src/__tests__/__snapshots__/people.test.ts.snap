@@ -3,7 +3,7 @@
 exports[`people should send a valid search request 1`] = `
 Array [
   Array [
-    "https://uclapi.com/search/people",
+    undefined,
     Object {
       "params": Object {
         "query": "William McGonagall",

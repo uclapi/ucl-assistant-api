@@ -1,12 +1,7 @@
-const fetch = require(`node-fetch`)
-const moment = require(`moment`)
-const {
-  WORKSPACE_IMAGE_URL,
-  WORKSPACE_SUMMARY_URL,
-  WORKSPACE_HISTORIC_URL,
-  WORKSPACE_SURVEYS_URL,
-} = require(`../constants/apiRoutes`)
-const axios = require(`axios`)
+import axios from 'axios'
+import moment from 'moment'
+import fetch from 'node-fetch'
+import ApiRoutes from '../constants/apiRoutes'
 
 const DEFAULT_ABSENT_COLOUR = `#00FF00`
 const DEFAULT_OCCUPIED_COLOUR = `#880000`
@@ -24,18 +19,21 @@ const cleanWorkspaces = workspaces => workspaces.map(
   })
 
 const getWorkspaces = async (surveyFilter = `student`) => {
-  const { data: { surveys } } = (await axios.get(WORKSPACE_SURVEYS_URL, {
-    params: {
-      token: process.env.UCLAPI_TOKEN,
-      survey_filter: surveyFilter,
+  const { data: { surveys } } = (await axios.get(
+    ApiRoutes.WORKSPACE_SURVEYS_URL,
+    {
+      params: {
+        token: process.env.UCLAPI_TOKEN,
+        survey_filter: surveyFilter,
+      },
     },
-  }))
+  ))
   return cleanWorkspaces(surveys)
 }
 
 const getImage = imageId =>
   fetch(
-    `${WORKSPACE_IMAGE_URL}?token=${
+    `${ApiRoutes.WORKSPACE_IMAGE_URL}?token=${
     process.env.UCLAPI_TOKEN
     }&image_id=${imageId}&image_format=raw`,
   )
@@ -48,7 +46,7 @@ const getLiveImage = ({
   occupiedColour = DEFAULT_OCCUPIED_COLOUR,
 }) =>
   fetch(
-    `${WORKSPACE_IMAGE_URL}/live?token=${
+    `${ApiRoutes.WORKSPACE_IMAGE_URL}/live?token=${
     process.env.UCLAPI_TOKEN
     }&survey_id=${
     surveyId
@@ -87,7 +85,7 @@ const reduceSeatInfo = maps =>
 
 const getSeatingInfo = async surveyId => {
   const { data } = (await axios.get(
-    WORKSPACE_SUMMARY_URL,
+    ApiRoutes.WORKSPACE_SUMMARY_URL,
     {
       params: {
         token: process.env.UCLAPI_TOKEN,
@@ -129,7 +127,7 @@ const reduceAverageData = averages => {
 
 const getHistoricSeatInfo = async surveyId => {
   const { data: { surveys } } = (await axios.get(
-    WORKSPACE_HISTORIC_URL,
+    ApiRoutes.WORKSPACE_HISTORIC_URL,
     {
       params: {
         token: process.env.UCLAPI_TOKEN,
@@ -150,7 +148,7 @@ const getHistoricSeatInfo = async surveyId => {
 
 const getAllSeatInfo = async () => {
   const { data: { surveys }, headers } = (await axios.get(
-    WORKSPACE_SUMMARY_URL,
+    ApiRoutes.WORKSPACE_SUMMARY_URL,
     {
       params: {
         token: process.env.UCLAPI_TOKEN,
