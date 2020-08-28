@@ -19,4 +19,4 @@ COPY --from=dependencies /usr/src/server/node_modules ./node_modules
 COPY --from=build /usr/src/server/dist ./dist
 EXPOSE ${PORT}
 USER node
-CMD [ "npm", "run", "start:prod", "|", "pino-pretty", "-t"]
+CMD npm run start:prod | pino-pretty -t -c

@@ -16,4 +16,4 @@ COPY . .
 EXPOSE ${PORT}
 
 USER node
-CMD [ "npm", "run", "start:dev", "|", "pino-pretty", "-t", "-c" ]
+CMD npm run start:dev | pino-pretty -t -c

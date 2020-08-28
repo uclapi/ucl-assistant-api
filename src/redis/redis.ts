@@ -28,7 +28,7 @@ const loadOrFetch = async (ctx: Context, key, fetchNewData, ttl) => {
   const newData = await fetchNewData()
   if (!skipCache) {
     if (ttl) {
-      await ctx.redisSetex(key, ttl, JSON.stringify(newData))
+      await ctx.redisSet(key, JSON.stringify(newData), `EX`, ttl)
     } else {
       await ctx.redisSet(key, JSON.stringify(newData))
     }

@@ -73,9 +73,6 @@ if (!Environment.TEST_MODE) {
   app.context.redisGet = promisify(app.context.redisClient.get).bind(
     app.context.redisClient,
   )
-  app.context.redisSetex = promisify(app.context.redisClient.setex).bind(
-    app.context.redisClient,
-  )
   app.context.redisSet = promisify(app.context.redisClient.set).bind(
     app.context.redisClient,
   )

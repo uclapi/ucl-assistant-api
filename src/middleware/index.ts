@@ -24,8 +24,6 @@ export const logger = async (ctx: Context, next: Next): Promise<void> => {
   ErrorManager.addDetail({
     method: ctx.method,
     url: ctx.url,
-    status: ctx.status,
-    message: ctx.message,
     headers: ctx.headers,
   })
   await next()
