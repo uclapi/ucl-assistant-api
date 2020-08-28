@@ -38,12 +38,14 @@ router.get(`/timetable`, jwt, async ctx => {
 router.get(`/timetable/week`, jwt, async ctx => {
   const date = ctx.query.date || null
 
-  const timetableData = await redis.loadOrFetch(
-    ctx,
-    `${redis.keys.TIMETABLE_PERSONAL_PATH}/${ctx.state.user.upi}/week/${date}`,
-    async () => getPersonalWeekTimetable(ctx.state.user.apiToken, date),
-    redis.ttl.TIMETABLE_TTL,
-  )
+  // const timetableData = await redis.loadOrFetch(
+  //   ctx,
+  //   `${redis.keys.TIMETABLE_PERSONAL_PATH}/${ctx.state.user.upi}/week/${date}`,
+  //   async () => getPersonalWeekTimetable(ctx.state.user.apiToken, date),
+  //   redis.ttl.TIMETABLE_TTL,
+  // )
+
+  const timetableData = await getPersonalWeekTimetable(ctx.state.user.apiToken, date)
 
   const { lastModified, data } = timetableData
   ctx.body = data

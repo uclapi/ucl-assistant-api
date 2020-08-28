@@ -21,22 +21,23 @@ export const getPersonalWeekTimetable = async (token: string, date = null) => {
     (_, index) => momentDate.clone().add(index, `days`).format(`YYYY-MM-DD`),
   )
 
+  const reqs = weekdays.map(
+    date => axios.get(
+      ApiRoutes.PERSONAL_TIMETABLE_URL,
+      {
+        params: {
+          ...params,
+          'date': date,
+        },
+      },
+    ),
+  )
+
   return {
     lastModified: (new Date()).toUTCString(),
     data: {
-      timetable: (await Promise.all(
-        weekdays.map(
-          date => axios.get(
-            ApiRoutes.PERSONAL_TIMETABLE_URL,
-            {
-              params: {
-                ...params,
-                'date_filter': date,
-              },
-            },
-          ),
-        ),
-      )).map(({ data: { timetable } }) => timetable)
+      timetable: (await Promise.all(reqs))
+        .map(({ data: { timetable } }) => timetable)
         .reduce((prev, cur) => {
           const [key, value] = Object.entries(cur)[0]
           return {
@@ -55,7 +56,7 @@ export const getPersonalTimetable = async (token, date = null) => {
   }
 
   if (date) {
-    params[`date_filter`] = moment(date).format(`YYYY-MM-DD`)
+    params[`date`] = moment(date).format(`YYYY-MM-DD`)
   }
   try {
     const { data } = await axios.get(
