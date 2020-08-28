@@ -4,7 +4,7 @@ WORKDIR /usr/src/server
 ENV TINI_VERSION=v0.16.1
 ENTRYPOINT ["/sbin/tini", "--"]
 COPY package*.json ./
-RUN npm i -g pino-pretty
+RUN npm i -g pino
 
 FROM base AS dependencies
 RUN npm ci --only=production
@@ -19,4 +19,4 @@ COPY --from=dependencies /usr/src/server/node_modules ./node_modules
 COPY --from=build /usr/src/server/dist ./dist
 EXPOSE ${PORT}
 USER node
-CMD npm run start:prod | pino-pretty -t -c
+CMD npm run start:prod | pino

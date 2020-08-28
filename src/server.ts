@@ -62,13 +62,7 @@ if (!Environment.TEST_MODE) {
     process.exit(1)
   }
 
-  if (connectionString.startsWith(`redis://`)) {
-    app.context.redisClient = redis.createClient(connectionString, {
-      tls: { servername: new URL(connectionString).hostname },
-    })
-  } else {
-    app.context.redisClient = redis.createClient(connectionString)
-  }
+  app.context.redisClient = redis.createClient(connectionString)
 
   app.context.redisGet = promisify(app.context.redisClient.get).bind(
     app.context.redisClient,
