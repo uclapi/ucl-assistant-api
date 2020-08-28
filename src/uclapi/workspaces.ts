@@ -1,12 +1,12 @@
 import axios from 'axios'
 import moment from 'moment'
-import fetch from 'node-fetch'
 import ApiRoutes from '../constants/apiRoutes'
+import Environment from '../lib/Environment'
 
 const DEFAULT_ABSENT_COLOUR = `#00FF00`
 const DEFAULT_OCCUPIED_COLOUR = `#880000`
 
-export const cleanWorkspaces = workspaces => workspaces.map(
+const cleanWorkspaces = workspaces => workspaces.map(
   ({ name, ...attributes }) => ({
     ...attributes,
     name: name.replace(/"/g, ``),
@@ -18,12 +18,13 @@ export const cleanWorkspaces = workspaces => workspaces.map(
     )
   })
 
-export const getWorkspaces = async (surveyFilter = `student`) => {
+const getWorkspaces = async (surveyFilter = `student`) => {
   const { data: { surveys } } = (await axios.get(
     ApiRoutes.WORKSPACE_SURVEYS_URL,
     {
       params: {
-        token: process.env.UCLAPI_TOKEN,
+        token: Environment.TOKEN,
+        client_secret: Environment.CLIENT_SECRET,
         survey_filter: surveyFilter,
       },
     },
@@ -31,35 +32,47 @@ export const getWorkspaces = async (surveyFilter = `student`) => {
   return cleanWorkspaces(surveys)
 }
 
-export const getImage = imageId =>
-  fetch(
-    `${ApiRoutes.WORKSPACE_IMAGE_URL}?token=${
-    process.env.UCLAPI_TOKEN
-    }&image_id=${imageId}&image_format=raw`,
+const getImage = async (imageId: string): Promise<Buffer> => {
+  const { data } = await axios.get(
+    ApiRoutes.WORKSPACE_IMAGE_URL,
+    {
+      params: {
+        token: Environment.TOKEN,
+        client_secret: Environment.CLIENT_SECRET,
+        image_id: imageId,
+        image_formate: `raw`,
+      },
+    },
   )
+  return data
+}
 
-const getLiveImage = ({
+const getLiveImage = async ({
   surveyId,
   mapId,
   circleRadius = 128,
   absentColour = DEFAULT_ABSENT_COLOUR,
   occupiedColour = DEFAULT_OCCUPIED_COLOUR,
-}) =>
-  fetch(
-    `${ApiRoutes.WORKSPACE_IMAGE_URL}/live?token=${
-    process.env.UCLAPI_TOKEN
-    }&survey_id=${
-    surveyId
-    }&map_id=${
-    mapId
-    }&circle_radius=${
-    circleRadius
-    }&absent_colour=${
-    encodeURIComponent(absentColour)
-    }&occupied_colour=${
-    encodeURIComponent(occupiedColour)
-    }`,
-  )
+}: {
+  surveyId: string,
+  mapId: string,
+  circleRadius: number,
+  absentColour: string,
+  occupiedColour: string,
+}): Promise<Buffer> => {
+  const { data } = await axios.get(`${ApiRoutes.WORKSPACE_IMAGE_URL}/live`, {
+    params: {
+      token: Environment.TOKEN,
+      client_secret: Environment.CLIENT_SECRET,
+      survey_id: surveyId,
+      map_id: mapId,
+      circle_radius: circleRadius,
+      absent_colour: absentColour,
+      occupied_colour: occupiedColour,
+    },
+  })
+  return data
+}
 
 /**
  * Takes a list of maps, returns a an object with number of occupied seats
@@ -67,7 +80,7 @@ const getLiveImage = ({
  *
  * @param {any} maps
  */
-export const reduceSeatInfo = maps =>
+const reduceSeatInfo = maps =>
   maps.reduce(
     (obj, map) => {
       const mapCapacity =
@@ -83,12 +96,13 @@ export const reduceSeatInfo = maps =>
     },
   )
 
-export const getSeatingInfo = async surveyId => {
+const getSeatingInfo = async (surveyId: string) => {
   const { data } = (await axios.get(
     ApiRoutes.WORKSPACE_SUMMARY_URL,
     {
       params: {
-        token: process.env.UCLAPI_TOKEN,
+        token: Environment.TOKEN,
+        client_secret: Environment.CLIENT_SECRET,
         survey_ids: surveyId,
       },
     },
@@ -100,7 +114,7 @@ export const getSeatingInfo = async surveyId => {
   return reduceSeatInfo(surveys[0].maps)
 }
 
-export const reduceAverageData = averages => {
+const reduceAverageData = averages => {
   const returnArray = Array.from(Array(24)).map(() => 0)
   const hours = Object.keys(averages).map(time => ({
     time,
@@ -125,12 +139,13 @@ export const reduceAverageData = averages => {
   })
 }
 
-export const getHistoricSeatInfo = async surveyId => {
+const getHistoricSeatInfo = async (surveyId: string) => {
   const { data: { surveys } } = (await axios.get(
     ApiRoutes.WORKSPACE_HISTORIC_URL,
     {
       params: {
-        token: process.env.UCLAPI_TOKEN,
+        token: Environment.TOKEN,
+        client_secret: Environment.CLIENT_SECRET,
         survey_ids: surveyId,
         days: 30,
       },
@@ -146,12 +161,13 @@ export const getHistoricSeatInfo = async surveyId => {
   return reduceAverageData(averages)
 }
 
-export const getAllSeatInfo = async () => {
+const getAllSeatInfo = async () => {
   const { data: { surveys }, headers } = (await axios.get(
     ApiRoutes.WORKSPACE_SUMMARY_URL,
     {
       params: {
-        token: process.env.UCLAPI_TOKEN,
+        token: Environment.TOKEN,
+        client_secret: Environment.CLIENT_SECRET,
       },
     },
   ))

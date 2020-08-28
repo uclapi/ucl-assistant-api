@@ -52,7 +52,6 @@
     "koa-router": "^9.4.0",
     "koa-session": "^6.0.0",
     "moment": "^2.27.0",
-    "node-fetch": "^2.6.0",
     "redis": "^3.0.2"
   },
   "devDependencies": {

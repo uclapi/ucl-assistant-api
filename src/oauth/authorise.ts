@@ -1,6 +1,7 @@
 import { Context } from 'koa'
 import moment from 'moment'
 import ApiRoutes from '../constants/apiRoutes'
+import Environment from '../lib/Environment'
 
 const authorise = async (ctx: Context): Promise<void> => {
   ctx.session = {
@@ -8,7 +9,7 @@ const authorise = async (ctx: Context): Promise<void> => {
     redirectURL: decodeURIComponent(ctx.query.return) || `UCLAssistant://+auth`,
   }
   const url = `${ApiRoutes.API_URL}/oauth/authorise?client_id=${
-    process.env.UCLAPI_CLIENT_ID
+    Environment.CLIENT_ID
     }&state=${ctx.session.state}`
   ctx.redirect(url)
 }

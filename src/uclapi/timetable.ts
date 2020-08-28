@@ -1,6 +1,7 @@
 import axios from 'axios'
 import moment from 'moment'
 import ApiRoutes from '../constants/apiRoutes'
+import Environment from '../lib/Environment'
 import ErrorManager from '../lib/ErrorManager'
 
 export const getPersonalWeekTimetable = async (token: string, date = null) => {
@@ -13,7 +14,7 @@ export const getPersonalWeekTimetable = async (token: string, date = null) => {
   }
 
   const params = {
-    client_secret: process.env.UCLAPI_CLIENT_SECRET,
+    client_secret: Environment.CLIENT_SECRET,
     token,
   }
 
@@ -51,7 +52,7 @@ export const getPersonalWeekTimetable = async (token: string, date = null) => {
 
 export const getPersonalTimetable = async (token, date = null) => {
   const params = {
-    client_secret: process.env.UCLAPI_CLIENT_SECRET,
+    client_secret: Environment.CLIENT_SECRET,
     token,
   }
 
@@ -81,7 +82,7 @@ export const getPersonalTimetable = async (token, date = null) => {
 export const getModuleTimetable = async (token, timetableModule) => {
   const { data, headers } = await axios.get(ApiRoutes.MODULE_TIMETABLE_URL, {
     params: {
-      client_secret: process.env.UCLAPI_CLIENT_SECRET,
+      client_secret: Environment.CLIENT_SECRET,
       token,
       modules: timetableModule,
     },

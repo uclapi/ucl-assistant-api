@@ -1,14 +1,17 @@
 import axios from 'axios'
+import Environment from '../lib/Environment'
 import { peopleSearch } from '../uclapi/people'
 
 jest.mock(`axios`)
 
 const SAMPLE_TOKEN = `tokeytoken`
+const SAMPLE_SECRET = `shibboleth`
 
 describe(`people`, () => {
 
   beforeAll(() => {
-    process.env.UCLAPI_TOKEN = SAMPLE_TOKEN
+    Environment.TOKEN = SAMPLE_TOKEN
+    Environment.CLIENT_SECRET = SAMPLE_SECRET
   })
 
   it(`should send a valid search request`, () => {

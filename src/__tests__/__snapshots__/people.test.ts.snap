@@ -6,6 +6,7 @@ Array [
     "https://uclapi.com/search/people",
     Object {
       "params": Object {
+        "client_secret": "shibboleth",
         "query": "William McGonagall",
         "token": "tokeytoken",
       },

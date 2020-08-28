@@ -1,7 +1,9 @@
 import jsonwebtoken from 'jsonwebtoken'
+import { Context, Next } from 'koa'
 import koaJwt from 'koa-jwt'
+import Environment from '../lib/Environment'
 
-export const authenticate = async (ctx, next) => {
+export const authenticate = async (ctx: Context, next: Next): Promise<void> => {
   if (ctx.session.isNew) {
     ctx.throw(`You need to be authenticated to access this endpoint`, 401)
   } else {
@@ -10,23 +12,23 @@ export const authenticate = async (ctx, next) => {
 }
 
 const jwtVerify = koaJwt({
-  secret: process.env.SECRET,
+  secret: Environment.SECRET,
 })
 
 // bypass JWT auth for local development
-const jwtVerifyDev = async (ctx, next) => {
+const jwtVerifyDev = async (ctx: Context, next: Next) => {
   ctx.state = {
     ...ctx.state,
-    user: { apiToken: process.env.UCLAPI_TOKEN },
+    user: { apiToken: Environment.TOKEN },
   }
   return await next()
 }
 
-export const genToken = user => jsonwebtoken.sign(user, process.env.SECRET)
+export const genToken = user => jsonwebtoken.sign(user, Environment.SECRET)
 
 const shouldBypassAuthentication = (
-  process.env.NODE_ENV === `development` ||
-  process.env.TEST_MODE === `true`
+  Environment.DEVELOPMENT_MODE ||
+  Environment.TEST_MODE
 )
 
 export const jwt = shouldBypassAuthentication ? jwtVerifyDev : jwtVerify

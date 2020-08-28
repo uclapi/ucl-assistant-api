@@ -5,6 +5,7 @@ import mount from 'koa-mount'
 import session from 'koa-session'
 import redis from 'redis'
 import { promisify } from 'util'
+import Environment from './lib/Environment'
 import ErrorManager from './lib/ErrorManager'
 import { jsonify, logger, timer } from './middleware'
 import Notifications from './notifications'
@@ -23,9 +24,9 @@ app.context.version = version
 console.log(`Running server version ${version}`)
 
 if (
-  !process.env.UCLAPI_CLIENT_ID ||
-  !process.env.UCLAPI_CLIENT_SECRET ||
-  !process.env.UCLAPI_TOKEN
+  !Environment.CLIENT_ID ||
+  !Environment.CLIENT_SECRET ||
+  !Environment.TOKEN
 ) {
   console.error(
     `Error! You have not set the UCLAPI_CLIENT_ID, ` +
@@ -35,14 +36,14 @@ if (
   process.abort()
 }
 
-if (!process.env.SECRET) {
+if (!Environment.SECRET) {
   console.warn(
     `Warning: You have not set the SECRET environment variable. ` +
     `This is not secure and definitely not recommended.`,
   )
 }
 
-if (!process.env.NOTIFICATIONS_URL && process.env.TEST_MODE !== `true`) {
+if (!Environment.NOTIFICATIONS_URL && !Environment.TEST_MODE) {
   console.warn(
     `Warning: You have not set the NOTIFICATION_URL ` +
     `environment variable. This means that notification ` +
@@ -50,10 +51,10 @@ if (!process.env.NOTIFICATIONS_URL && process.env.TEST_MODE !== `true`) {
   )
 }
 
-app.keys = [process.env.SECRET || `secret`]
+app.keys = [Environment.SECRET || `secret`]
 
-if (process.env.TEST_MODE !== `true`) {
-  const connectionString = process.env.REDIS_URL
+if (!Environment.TEST_MODE) {
+  const connectionString = Environment.REDIS_URL
 
   if (connectionString === undefined) {
     console.error(`Please set the REDIS_URL environment variable`)
@@ -93,7 +94,7 @@ app.use(mount(router))
 app.on(`error`, ErrorManager.koaErrorHandler)
 
 if (!module.parent) {
-  const port = process.env.PORT || 3000
+  const port = Environment.PORT || 3000
   app.listen(port)
   console.log(`UCL Assistant API listening on ${port}`)
 }

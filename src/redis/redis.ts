@@ -1,3 +1,6 @@
+import { Context } from "koa"
+import Environment from "../lib/Environment"
+
 /**
  * Loads data from redis using the given key, or fetches
  * new data if there is a cache miss, populating the cache
@@ -11,11 +14,10 @@
  * If left blank, the data will not be set with a TTL.
  * @returns The new or cached data.
  */
-const loadOrFetch = async (ctx, key, fetchNewData, ttl) => {
+const loadOrFetch = async (ctx: Context, key, fetchNewData, ttl) => {
 
   const skipCache = (
-    process.env.TEST_MODE === `true` ||
-    process.env.NODE_ENV === `development`
+    Environment.TEST_MODE || Environment.DEVELOPMENT_MODE
   )
   if (!skipCache) {
     const cacheData = await ctx.redisGet(key)

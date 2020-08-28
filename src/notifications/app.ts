@@ -1,12 +1,13 @@
 import Koa from 'koa'
 import Router from 'koa-router'
+import Environment from '../lib/Environment'
 import { jwt } from '../middleware/auth'
 import api from './api'
 
 const app = new Koa()
 
 app.use(async (ctx, next) => {
-  if (!process.env.NOTIFICATIONS_URL) {
+  if (!Environment.NOTIFICATIONS_URL) {
     ctx.throw(500, `Notifications are not supported`)
   }
   await next()

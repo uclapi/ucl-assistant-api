@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Environment from '../lib/Environment'
 import { getPersonalWeekTimetable } from '../uclapi/timetable'
 
 const SAMPLE_TOKEN = `eySFsfef`
@@ -10,7 +11,7 @@ jest.mock(`axios`)
 
 describe(`timetable`, () => {
   beforeAll(() => {
-    process.env.UCLAPI_CLIENT_SECRET = SAMPLE_CLIENT_SECRET
+    Environment.CLIENT_SECRET = SAMPLE_CLIENT_SECRET
   })
   it(`should send a valid timetable request`, async () => {
     (<jest.Mock>axios.get).mockResolvedValue({

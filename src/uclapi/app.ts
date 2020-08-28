@@ -38,14 +38,12 @@ router.get(`/timetable`, jwt, async ctx => {
 router.get(`/timetable/week`, jwt, async ctx => {
   const date = ctx.query.date || null
 
-  // const timetableData = await redis.loadOrFetch(
-  //   ctx,
-  //   `${redis.keys.TIMETABLE_PERSONAL_PATH}/${ctx.state.user.upi}/week/${date}`,
-  //   async () => getPersonalWeekTimetable(ctx.state.user.apiToken, date),
-  //   redis.ttl.TIMETABLE_TTL,
-  // )
-
-  const timetableData = await getPersonalWeekTimetable(ctx.state.user.apiToken, date)
+  const timetableData = await redis.loadOrFetch(
+    ctx,
+    `${redis.keys.TIMETABLE_PERSONAL_PATH}/${ctx.state.user.upi}/week/${date}`,
+    async () => getPersonalWeekTimetable(ctx.state.user.apiToken, date),
+    redis.ttl.TIMETABLE_TTL,
+  )
 
   const { lastModified, data } = timetableData
   ctx.body = data
@@ -131,7 +129,7 @@ router.get(`/workspaces/getimage/:id.png`, jwt, async ctx => {
   ctx.set({ "Content-Type": `image/png` })
   ctx.state.jsonify = false
   const res = await Workspaces.getImage(ctx.params.id)
-  ctx.body = res.body
+  ctx.body = res
 })
 
 router.get(`/workspaces/getliveimage/map.svg`, jwt, async ctx => {
@@ -146,7 +144,7 @@ router.get(`/workspaces/getliveimage/map.svg`, jwt, async ctx => {
     absentColour: ctx.query.absent_colour,
     occupiedColour: ctx.query.occupied_colour,
   })
-  ctx.body = res.body
+  ctx.body = res
 })
 
 router.get(`/workspaces/summary`, jwt, async ctx => {

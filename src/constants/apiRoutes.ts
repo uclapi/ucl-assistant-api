@@ -1,4 +1,6 @@
-const API_URL = process.env.API_URL || `https://uclapi.com`
+import Environment from '../lib/Environment'
+
+const API_URL = Environment.API_URL || `https://uclapi.com`
 const TIMETABLE_BASE_URL = `${API_URL}/timetable`
 const WORKSPACES_BASE_URL = `${API_URL}/workspaces`
 const ROOMBOOKINGS_BASE_URL = `${API_URL}/roombookings`
