@@ -2,6 +2,7 @@ import fs from 'fs'
 import Koa from 'koa'
 import bodyparser from 'koa-bodyparser'
 import mount from 'koa-mount'
+import Pino from 'koa-pino-logger'
 import session from 'koa-session'
 import redis from 'redis'
 import { promisify } from 'util'
@@ -84,6 +85,7 @@ app.use(session({}, app))
 
 app.use(bodyparser())
 app.use(timer)
+app.use(Pino())
 app.use(logger)
 app.use(jsonify)
 // import and use the UCL API router.

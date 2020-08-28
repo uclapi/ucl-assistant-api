@@ -10,9 +10,10 @@ ENTRYPOINT ["/sbin/tini", "--"]
 COPY package*.json ./
 
 RUN npm ci
+RUN npm i -g pino-pretty
 COPY . .
 
 EXPOSE ${PORT}
 
 USER node
-CMD [ "npm", "run", "start:dev" ]
+CMD [ "npm", "run", "start:dev", "|", "pino-pretty", "-t", "-c" ]
