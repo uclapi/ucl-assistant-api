@@ -74,7 +74,7 @@
     "eslint": "^7.7.0",
     "eslint-plugin-disable": "^2.0.1",
     "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jest": "^23.20.0",
+    "eslint-plugin-jest": "^24.0.2",
     "eslint-plugin-json-format": "^2.0.1",
     "eslint-plugin-no-secrets": "^0.6.8",
     "eslint-plugin-node": "^11.1.0",
