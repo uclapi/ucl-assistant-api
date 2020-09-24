@@ -40,7 +40,7 @@ Array [
   },
   Object {
     "id": 28,
-    "name": "UCL Institute of Neurology",
+    "name": "UCL Institute of Neurology - Social Distance",
   },
   Object {
     "id": 46,
@@ -65,10 +65,6 @@ Array [
   Object {
     "id": 79,
     "name": "UCL GOSICH - Wolfson Centre F17",
-  },
-  Object {
-    "id": 16,
-    "name": "UCL Ear Institute & Hearing Loss Library",
   },
   Object {
     "id": 45,
@@ -233,7 +229,7 @@ Array [
   },
   Object {
     "id": 28,
-    "name": "UCL Institute of Neurology",
+    "name": "UCL Institute of Neurology - Social Distance",
   },
   Object {
     "id": 46,
@@ -258,10 +254,6 @@ Array [
   Object {
     "id": 79,
     "name": "UCL GOSICH - Wolfson Centre F17",
-  },
-  Object {
-    "id": 16,
-    "name": "UCL Ear Institute & Hearing Loss Library",
   },
   Object {
     "id": 45,
