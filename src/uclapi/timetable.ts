@@ -4,6 +4,11 @@ import ApiRoutes from '../constants/apiRoutes'
 import Environment from '../lib/Environment'
 import ErrorManager from '../lib/ErrorManager'
 
+const timeToInt = (time) => Number.parseInt(time.replace(`:`, ``))
+const sortEvents = (dayEvents) => dayEvents.sort(
+  (a, b) => timeToInt(a.start_time) - timeToInt(b.start_time),
+)
+
 export const getPersonalWeekTimetable = async (token: string, date = null) => {
   if (!date) {
     throw new Error(`Must specify date to retrieve weekly timetable`)
@@ -40,10 +45,10 @@ export const getPersonalWeekTimetable = async (token: string, date = null) => {
       timetable: (await Promise.all(reqs))
         .map(({ data: { timetable } }) => timetable)
         .reduce((prev, cur) => {
-          const [key, value] = Object.entries(cur)[0]
+          const [day, events] = Object.entries(cur)[0]
           return {
             ...prev,
-            [key]: value,
+            [day]: sortEvents(events),
           }
         }, {}),
     },
@@ -70,7 +75,14 @@ export const getPersonalTimetable = async (token, date = null) => {
       // but the main API is returning the wrong value
       // TODO: change this back when caching is fixed
       lastModified: (new Date()).toUTCString(),
-      data,
+      data: {
+        ...data,
+        timetable: {
+          [Object.keys(data.timetable)[0]]: sortEvents(
+            Object.values(data.timetable)[0],
+          ),
+        },
+      },
     }
   } catch (error) {
     ErrorManager.captureError(error)
