@@ -15,7 +15,18 @@ describe(`timetable`, () => {
   })
   it(`should send a valid timetable request`, async () => {
     (<jest.Mock>axios.get).mockResolvedValue({
-      data: { timetable: { day: `event` } },
+      data: {
+        timetable: {
+          day: [
+            {
+              start_time: `17:00`,
+            },
+            {
+              start_time: `10:00`,
+            },
+          ],
+        },
+      },
     })
     expect.assertions(2)
 
