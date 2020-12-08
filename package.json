@@ -67,7 +67,7 @@
     "@types/koa-bodyparser": "^4.3.0",
     "@types/koa-router": "^7.4.1",
     "@types/node": "^14.11.2",
-    "@typescript-eslint/eslint-plugin": "^4.2.0",
+    "@typescript-eslint/eslint-plugin": "^4.9.1",
     "@typescript-eslint/parser": "^4.2.0",
     "codecov": "^3.7.2",
     "dotenv": "^8.2.0",
