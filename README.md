@@ -68,4 +68,4 @@ And then the service will start up as `ucl-assistant-backend`.
 
 Run `npm run test:dev` to run Jest in interactive mode where it'll re-run all tests as you develop.
 
-To run tests on an ad hoc bases, use `npm run test`
+To run tests on an ad hoc basis, use `npm run test`

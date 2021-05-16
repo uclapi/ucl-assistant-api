@@ -6,7 +6,9 @@ import Environment from '../lib/Environment'
 const authorise = async (ctx: Context): Promise<void> => {
   ctx.session = {
     state: moment().valueOf(),
-    redirectURL: decodeURIComponent(ctx.query.return) || `UCLAssistant://+auth`,
+    redirectURL: decodeURIComponent(
+      ctx.query.return as string,
+    ) || `UCLAssistant://+auth`,
   }
   const url = `${ApiRoutes.API_URL}/oauth/authorise?client_id=${
     Environment.CLIENT_ID

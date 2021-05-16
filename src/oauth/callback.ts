@@ -21,7 +21,7 @@ const callback = async (ctx: Context): Promise<void> => {
   }
 
   // trade auth code for a token
-  let json = await getToken(code)
+  let json = await getToken(code as string)
 
   // update session to include token.
   const apiToken = json.token

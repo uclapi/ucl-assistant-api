@@ -79,7 +79,7 @@ router.get(`/search/people`, jwt, async ctx => {
   const data = await redis.loadOrFetch(
     ctx,
     `${redis.keys.PEOPLE_SEARCH_PATH}/${ctx.query.query}`,
-    async () => peopleSearch(ctx.query.query),
+    async () => peopleSearch(<string>ctx.query.query),
     redis.ttl.PEOPLE_SEARCH_TTL,
   )
   ctx.body = data
@@ -94,7 +94,7 @@ router.get(`/search/rooms`, jwt, async ctx => {
   const data = await redis.loadOrFetch(
     ctx,
     `${redis.keys.ROOMS_SEARCH_PATH}/${ctx.query.query}`,
-    async () => roomsSearch(ctx.query.query),
+    async () => roomsSearch(<string>ctx.query.query),
     redis.ttl.ROOMS_SEARCH_TTL,
   )
   ctx.body = data
@@ -138,11 +138,11 @@ router.get(`/workspaces/getliveimage/map.svg`, jwt, async ctx => {
   ctx.set({ "Content-Type": `image/svg+xml` })
   ctx.state.jsonify = false
   const res = await Workspaces.getLiveImage({
-    surveyId: ctx.query.survey_id,
-    mapId: ctx.query.map_id,
-    circleRadius: ctx.query.circle_radius,
-    absentColour: ctx.query.absent_colour,
-    occupiedColour: ctx.query.occupied_colour,
+    surveyId: <string>ctx.query.survey_id,
+    mapId: <string>ctx.query.map_id,
+    circleRadius: Number(ctx.query.circle_radius),
+    absentColour: <string>ctx.query.absent_colour,
+    occupiedColour: <string>ctx.query.occupied_colour,
   })
   ctx.body = res
 })
@@ -163,7 +163,7 @@ router.get(`/workspaces/historic`, jwt, async ctx => {
   const data = await redis.loadOrFetch(
     ctx,
     `${redis.keys.WORKSPACE_HISTORIC_DATA_PATH}/${ctx.query.id}`,
-    async () => Workspaces.getHistoricSeatInfo(ctx.query.id),
+    async () => Workspaces.getHistoricSeatInfo(<string>ctx.query.id),
     redis.ttl.WORKSPACE_HISTORIC_DATA_TTL,
   )
   ctx.body = data
@@ -181,7 +181,7 @@ router.get(`/workspaces`, jwt, async ctx => {
   ctx.body = await redis.loadOrFetch(
     ctx,
     `${redis.keys.WORKSPACE_SURVEYS_PATH}/${surveyFilter}`,
-    async () => Workspaces.getWorkspaces(surveyFilter),
+    async () => Workspaces.getWorkspaces(<string>surveyFilter),
     redis.ttl.WORKSPACE_SURVEYS_TTL,
   )
 })
@@ -202,7 +202,7 @@ router.get(`/freerooms`, jwt, async ctx => {
     start_datetime: startDateTime,
     end_datetime: endDateTime,
   } = ctx.query
-  ctx.body = await getFreeRooms(startDateTime, endDateTime)
+  ctx.body = await getFreeRooms(<string>startDateTime, <string>endDateTime)
 })
 
 app.use(router.routes())

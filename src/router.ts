@@ -3,12 +3,14 @@ import Router from 'koa-router'
 import indexRoutes from './constants/indexRoutes'
 import { jwt } from './middleware/auth'
 import oauth from './oauth'
+import type { KoaQuery } from './types/uclapi'
 
 const app = new Koa()
 const router = new Router()
 
 router.get(`/`, async ctx => {
-  ctx.query.pretty = true
+  const query = ctx.request.query as unknown as KoaQuery
+  query.pretty = true
   ctx.body = indexRoutes
 })
 

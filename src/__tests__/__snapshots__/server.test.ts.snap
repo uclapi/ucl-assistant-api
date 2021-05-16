@@ -4,10 +4,18 @@ exports[`test server returns list of workspaces at /workspaces 1`] = `
 Array [
   Object {
     "id": 58,
+    "name": "UCL Student Centre - Social Distance",
+  },
+  Object {
+    "id": 97,
     "name": "UCL Student Centre",
   },
   Object {
     "id": 39,
+    "name": "UCL SSEES Library - Social Distance",
+  },
+  Object {
+    "id": 102,
     "name": "UCL SSEES Library",
   },
   Object {
@@ -23,11 +31,23 @@ Array [
     "name": "UCL Science Library - Social Distance",
   },
   Object {
+    "id": 93,
+    "name": "UCL Science Library",
+  },
+  Object {
     "id": 27,
+    "name": "UCL School of Pharmacy Library - Social Distance",
+  },
+  Object {
+    "id": 99,
     "name": "UCL School of Pharmacy Library",
   },
   Object {
     "id": 38,
+    "name": "UCL Main Library - Social Distance",
+  },
+  Object {
+    "id": 96,
     "name": "UCL Main Library",
   },
   Object {
@@ -43,11 +63,23 @@ Array [
     "name": "UCL Institute of Neurology - Social Distance",
   },
   Object {
+    "id": 91,
+    "name": "UCL Institute of Neurology",
+  },
+  Object {
     "id": 46,
+    "name": "UCL Institute of Education Library - Social Distance",
+  },
+  Object {
+    "id": 95,
     "name": "UCL Institute of Education Library",
   },
   Object {
     "id": 7,
+    "name": "UCL Institute of Archaeology Library - Social Distance",
+  },
+  Object {
+    "id": 98,
     "name": "UCL Institute of Archaeology Library",
   },
   Object {
@@ -68,10 +100,18 @@ Array [
   },
   Object {
     "id": 45,
+    "name": "UCL Cruciform Hub - Social Distance",
+  },
+  Object {
+    "id": 100,
     "name": "UCL Cruciform Hub",
   },
   Object {
     "id": 8,
+    "name": "UCL Bartlett Library - Social Distance",
+  },
+  Object {
+    "id": 101,
     "name": "UCL Bartlett Library",
   },
   Object {
@@ -105,6 +145,10 @@ Array [
   Object {
     "id": 87,
     "name": "Master Other",
+  },
+  Object {
+    "id": 103,
+    "name": "Master Library Social Distance",
   },
   Object {
     "id": 86,
@@ -160,7 +204,7 @@ Array [
   },
   Object {
     "id": 90,
-    "name": "Bidborough House",
+    "name": "Bidborough House - Social Distance",
   },
   Object {
     "id": 82,
@@ -193,10 +237,18 @@ exports[`test server returns list of workspaces with summarised occupancy data a
 Array [
   Object {
     "id": 58,
+    "name": "UCL Student Centre - Social Distance",
+  },
+  Object {
+    "id": 97,
     "name": "UCL Student Centre",
   },
   Object {
     "id": 39,
+    "name": "UCL SSEES Library - Social Distance",
+  },
+  Object {
+    "id": 102,
     "name": "UCL SSEES Library",
   },
   Object {
@@ -212,11 +264,23 @@ Array [
     "name": "UCL Science Library - Social Distance",
   },
   Object {
+    "id": 93,
+    "name": "UCL Science Library",
+  },
+  Object {
     "id": 27,
+    "name": "UCL School of Pharmacy Library - Social Distance",
+  },
+  Object {
+    "id": 99,
     "name": "UCL School of Pharmacy Library",
   },
   Object {
     "id": 38,
+    "name": "UCL Main Library - Social Distance",
+  },
+  Object {
+    "id": 96,
     "name": "UCL Main Library",
   },
   Object {
@@ -232,11 +296,23 @@ Array [
     "name": "UCL Institute of Neurology - Social Distance",
   },
   Object {
+    "id": 91,
+    "name": "UCL Institute of Neurology",
+  },
+  Object {
     "id": 46,
+    "name": "UCL Institute of Education Library - Social Distance",
+  },
+  Object {
+    "id": 95,
     "name": "UCL Institute of Education Library",
   },
   Object {
     "id": 7,
+    "name": "UCL Institute of Archaeology Library - Social Distance",
+  },
+  Object {
+    "id": 98,
     "name": "UCL Institute of Archaeology Library",
   },
   Object {
@@ -257,10 +333,18 @@ Array [
   },
   Object {
     "id": 45,
+    "name": "UCL Cruciform Hub - Social Distance",
+  },
+  Object {
+    "id": 100,
     "name": "UCL Cruciform Hub",
   },
   Object {
     "id": 8,
+    "name": "UCL Bartlett Library - Social Distance",
+  },
+  Object {
+    "id": 101,
     "name": "UCL Bartlett Library",
   },
   Object {
@@ -341,7 +425,7 @@ Array [
   },
   Object {
     "id": 90,
-    "name": "Bidborough House",
+    "name": "Bidborough House - Social Distance",
   },
   Object {
     "id": 82,

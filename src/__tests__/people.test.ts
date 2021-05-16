@@ -1,8 +1,22 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import Environment from '../lib/Environment'
 import { peopleSearch } from '../uclapi/people'
 
 jest.mock(`axios`)
+const axiosGet = axios.get as jest.Mock
+axiosGet.mockImplementation(() => Promise.resolve({
+  data: {
+    ok: true,
+    people: [
+      {
+        "name": `Jane Doe`,
+        "status": `Student`,
+        "department": `Dept of Med Phys & Biomedical Eng`,
+        "email": `jane.doe.17@ucl.ac.uk`,
+      },
+  ],
+  },
+}))
 
 const SAMPLE_TOKEN = `tokeytoken`
 const SAMPLE_SECRET = `shibboleth`
@@ -18,6 +32,6 @@ describe(`people`, () => {
     const query = `William McGonagall`
 
     peopleSearch(query)
-    expect((axios.get as jest.Mock).mock.calls).toMatchSnapshot()
+    expect(axiosGet.mock.calls).toMatchSnapshot()
   })
 })
