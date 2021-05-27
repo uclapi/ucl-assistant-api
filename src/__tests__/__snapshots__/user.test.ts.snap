@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`user should send a valid getToken request 1`] = `
+Array [
+  Array [
+    "https://uclapi.com/oauth/token",
+    Object {
+      "params": Object {
+        "client_id": "7411377317577396.1394380425307220",
+        "client_secret": "shibboleth",
+        "code": "super-secret-code",
+      },
+    },
+  ],
+]
+`;
+
+exports[`user should send a valid getUserData request 1`] = `
+Array [
+  Array [
+    "https://uclapi.com/oauth/user/data",
+    Object {
+      "params": Object {
+        "client_secret": "shibboleth",
+        "token": "tokentokentoken",
+      },
+    },
+  ],
+]
+`;

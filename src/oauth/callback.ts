@@ -1,8 +1,7 @@
 import { Context } from 'koa'
 import querystring from 'querystring'
 import { genToken } from '../middleware/auth'
-import User from '../uclapi/user'
-const { getToken, getUserData } = User
+import { getToken, getUserData } from '../uclapi/user'
 
 const callback = async (ctx: Context): Promise<void> => {
   if (!Object.keys(ctx.session).includes(`state`)) {
