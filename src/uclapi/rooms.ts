@@ -1,25 +1,26 @@
 import axios from 'axios'
 import ApiRoutes from '../constants/apiRoutes'
-
-const { UCLAPI_TOKEN } = process.env
+import Environment from '../lib/Environment'
 
 export const roomsSearch = async (query: string) => {
   if (!query || query.length <= 3) {
     throw new Error(`Must provide a query!`)
   }
 
-  return (await axios.get(ApiRoutes.ROOMS_SEARCH_URL, {
+  const { data } = await axios.get(ApiRoutes.ROOMS_SEARCH_URL, {
     params: {
-      token: UCLAPI_TOKEN,
+      token: Environment.TOKEN,
       roomname: query,
     },
-  })).data
+  })
+
+  return data
 }
 
-export const getSites = async () => {
+export const getAllRooms = async () => {
   const { data: { rooms } } = (await axios.get(ApiRoutes.ROOMS_SEARCH_URL, {
     params: {
-      token: UCLAPI_TOKEN,
+      token: Environment.TOKEN,
     },
   }))
   const sites = Array.from(new Set(rooms.map(({ siteid }) => siteid)))
@@ -37,11 +38,13 @@ export const getEquipment = async (roomid, siteid) => {
     throw new Error(`Must specify roomid and siteid`)
   }
 
-  return (await axios.get(ApiRoutes.ROOMS_EQUIPMENT_URL, {
+  const { data } = await axios.get(ApiRoutes.ROOMS_EQUIPMENT_URL, {
     params: {
-      token: UCLAPI_TOKEN,
+      token: Environment.TOKEN,
       roomid,
       siteid,
     },
-  })).data
+  })
+
+  return data
 }

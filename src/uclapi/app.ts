@@ -4,7 +4,7 @@ import { jwt } from '../middleware/auth'
 import redis from '../redis'
 import { peopleSearch } from './people'
 import { getFreeRooms, getRoomBookings } from './roombookings'
-import { getEquipment, getSites, roomsSearch } from './rooms'
+import { getEquipment, getAllRooms, roomsSearch } from './rooms'
 import {
   getModuleTimetable,
   getPersonalTimetable,
@@ -104,7 +104,7 @@ router.get(`/sites`, jwt, async ctx => {
   const rooms = await redis.loadOrFetch(
     ctx,
     redis.keys.SITES_SEARCH_PATH,
-    async () => getSites(),
+    async () => getAllRooms(),
     redis.ttl.ROOMS_SEARCH_TTL,
   )
   ctx.body = rooms

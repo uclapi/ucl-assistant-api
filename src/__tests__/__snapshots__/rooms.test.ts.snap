@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rooms should send a valid equipment request 1`] = `
+Array [
+  Array [
+    "https://uclapi.com/roombookings/equipment",
+    Object {
+      "params": Object {
+        "roomid": "123",
+        "siteid": "456",
+        "token": "tokeytoken",
+      },
+    },
+  ],
+]
+`;
+
+exports[`rooms should send a valid getAllRooms request 1`] = `
+Array [
+  Array [
+    "https://uclapi.com/roombookings/rooms",
+    Object {
+      "params": Object {
+        "token": "tokeytoken",
+      },
+    },
+  ],
+]
+`;
+
+exports[`rooms should send a valid room search request 1`] = `
+Array [
+  Array [
+    "https://uclapi.com/roombookings/rooms",
+    Object {
+      "params": Object {
+        "roomname": "Bentham House",
+        "token": "tokeytoken",
+      },
+    },
+  ],
+]
+`;
