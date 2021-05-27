@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios'
+import axios from 'axios'
 import Environment from '../lib/Environment'
 import { peopleSearch } from '../uclapi/people'
 

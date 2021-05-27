@@ -1,6 +1,7 @@
 import axios from 'axios'
 import moment from 'moment'
 import ApiRoutes from '../constants/apiRoutes'
+import Environment from '../lib/Environment'
 
 const { UCLAPI_TOKEN } = process.env
 
@@ -12,14 +13,15 @@ export const getRoomBookings = async ({ roomid, siteid, date }) => {
     throw new Error(`Must provide a siteid`)
   }
 
-  return (await axios.get(ApiRoutes.ROOMBOOKINGS_DATA_URL, {
+  const { data } = await axios.get(ApiRoutes.ROOMBOOKINGS_DATA_URL, {
     params: {
-      token: UCLAPI_TOKEN,
+      token: Environment.TOKEN,
       roomid,
       siteid,
       date,
     },
-  })).data
+  })
+  return data
 }
 
 export const getFreeRooms = async (
@@ -29,13 +31,14 @@ export const getFreeRooms = async (
     .toISOString(),
 ) => {
 
-  return (await axios.get(ApiRoutes.ROOMBOOKINGS_FREEROOMS_URL, {
+  const { data } =  await axios.get(ApiRoutes.ROOMBOOKINGS_FREEROOMS_URL, {
     params: {
-      token: UCLAPI_TOKEN,
+      token: Environment.TOKEN,
       start_datetime: startDateTime,
       end_datetime: endDateTime,
     },
-  })).data
+  })
+  return data
 }
 
 export default {

@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`roombookings should send a valid free rooms request 1`] = `
+Array [
+  Array [
+    "https://uclapi.com/roombookings/freerooms",
+    Object {
+      "params": Object {
+        "end_datetime": "2021-05-27T04:56:50.191Z",
+        "start_datetime": "2021-05-27T04:55:57.727Z",
+        "token": "tokeytoken",
+      },
+    },
+  ],
+]
+`;
+
+exports[`roombookings should send a valid room bookings search request 1`] = `
+Array [
+  Array [
+    "https://uclapi.com/roombookings/bookings",
+    Object {
+      "params": Object {
+        "date": "2021-05-27T04:55:01.694Z",
+        "roomid": "123",
+        "siteid": "456",
+        "token": "tokeytoken",
+      },
+    },
+  ],
+]
+`;
