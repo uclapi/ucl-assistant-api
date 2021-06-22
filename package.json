@@ -55,7 +55,7 @@
     "@babel/cli": "^7.14.3",
     "@babel/core": "^7.14.3",
     "@babel/node": "^7.14.2",
-    "@babel/preset-env": "^7.14.2",
+    "@babel/preset-env": "^7.14.7",
     "@babel/preset-typescript": "^7.13.0",
     "@codechecks/client": "^0.1.10",
     "@types/jest": "^26.0.23",
