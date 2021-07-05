@@ -9,21 +9,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@v2.2.0
-        with:
-          node-version: 12
       - uses: supercharge/redis-github-action@1.2.0
         with:
           redis-version: 6
       - uses: actions/checkout@v2.3.4
-      - uses: actions/cache@v2.1.5
+      - uses: actions/setup-node@v2.2.0
         with:
-          path: |
-            ~/.npm
-            **/node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          node-version: 14.17.2
+          cache: npm
       - run: npm ci
       - run: npm run build
       - run: echo '${{ secrets.DOT_ENV }}' > .env
