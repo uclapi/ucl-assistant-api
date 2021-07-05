@@ -15,8 +15,12 @@ app.use(async (ctx, next) => {
 
 const router = new Router()
 
+interface RegisterRequestBody {
+  token: string,
+}
+
 router.post(`/register`, jwt, async ctx => {
-  const { token } = ctx.request.body
+  const { token } = ctx.request.body as unknown as RegisterRequestBody
   ctx.assert(token, 400, `No token provided.`)
   try {
     console.log(
